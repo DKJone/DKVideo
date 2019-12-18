@@ -11,6 +11,7 @@ protocol ListAble {
     var text: String { get }
     var id: String { get }
     var selected: Bool { get set }
+    var icon:UIImage? { get set }
 }
 
 extension ListAble {
@@ -21,15 +22,18 @@ extension ListAble {
 
 /// 默认的列表协议数据实现
 struct CommonListData: ListAble {
+    var icon: UIImage?
+    
     var text: String
 
     var id: String
 
     var selected: Bool
-    init(id: String = "", text: String = "", selected: Bool = false) {
+    init(id: String = "", text: String = "", selected: Bool = false,icon:UIImage? = nil) {
         self.id = id
         self.text = text
         self.selected = selected
+        self.icon = icon
     }
 }
 
@@ -124,6 +128,8 @@ class CommonSelectVC<T: ListAble>: ViewController, UITableViewDelegate, UITableV
         cell?.textLabel?.font = UIFont.systemFont(ofSize: 13)
         cell?.backgroundColor = UIColor.clear
         cell?.textLabel?.textColor = .text()
+        cell?.imageView?.image =  listData[indexPath.row].icon
+        cell?.imageView?.contentMode = .center
         return cell!
     }
 

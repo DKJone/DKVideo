@@ -18,13 +18,14 @@ target 'DKVideo' do
   pod 'KafkaRefresh'
   pod 'DZNEmptyDataSet'
   pod 'Aspects'
+  pod 'FloatingPanel'
 # Debug
   pod 'FLEX', :configurations => ['Debug']
 
   # Tools
    pod 'R.swift'
    pod 'SwifterSwift'
-  pod "GCDWebServer/WebDAV"
+   pod "GCDWebServer/WebDAV"
    pod 'SwiftyJSON'
    pod 'AttributedLib'
    pod 'HandyJSON'
@@ -34,6 +35,7 @@ target 'DKVideo' do
     pod 'RxViewController'
     pod 'RxGesture'
     pod 'RxOptional'
+    pod 'RxDataSources'
     pod 'RxTheme'
     pod 'RxSwift' , '~> 5.0.0'
 

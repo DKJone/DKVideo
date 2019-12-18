@@ -11,18 +11,11 @@ import RxSwift
 class LaunchViewController: ViewController {
     override func makeUI() {
         view.backgroundColor = .black
-        let barView = UIView()
-        barView.backgroundColor = .black
         let webview = WKWebView()
         webview.backgroundColor = .black
         view.addSubview(webview)
         webview.snp.makeConstraints {
             $0.edges.equalTo(UIEdgeInsets(top: -50, left: 0, bottom: -50, right: 0))
-        }
-        view.addSubview(barView)
-        barView.snp.makeConstraints { (make) in
-            make.top.right.left.equalToSuperview()
-            make.height.equalTo(safeAreaTopHeight + 44)
         }
         if let url = Bundle.main.url(forResource: "index", withExtension: "html") {
            var htmlStr = (try? String(contentsOf: url)) ?? ""
@@ -42,6 +35,16 @@ class LaunchViewController: ViewController {
     }
 
     func switchToHome(){
-        keyWindow.rootViewController = HomeTabbarVC()
+        let vc = UISplitViewController()
+        vc.viewControllers = [HomeTabbarVC(),NavigationController(rootViewController: WebViewController())]
+        vc.preferredDisplayMode = .primaryOverlay
+        keyWindow.rootViewController = vc
     }
+}
+
+var currentWebVC:WebViewController{
+    if let vc = ((keyWindow.rootViewController as? UISplitViewController)?.viewControllers.last?.children.first as? WebViewController){
+        return vc
+    }
+    return WebViewController()
 }

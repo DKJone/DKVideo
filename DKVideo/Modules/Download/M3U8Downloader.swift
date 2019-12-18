@@ -7,7 +7,7 @@ open class M3U8Downloader: NSObject {
     public let progress: BehaviorRelay<Float> = .init(value: 0.0)
     public var fileName = ""
     var directoryName: String {
-        fileName.replacingOccurrences(of: ".m3u8", with: "")
+        self.fileName.replacingOccurrences(of: ".m3u8", with: "")
     }
 
     public var m3u8URL = ""
@@ -23,30 +23,32 @@ open class M3U8Downloader: NSObject {
     }
 
     open func parse() {
-        m3u8Parser.parser(url: m3u8URL, name: fileName, success: { [weak self] _ in
-            guard let self = self else { return }
-            self.downloader.tsPlaylist = self.m3u8Parser.tsPlaylist
-            self.downloader.m3u8Data = self.m3u8Parser.m3u8Data
-            self.downloader.startDownload()
-        }) { [weak self] error in
-            print(error)
-            showMessage(message: error.localizedDescription)
-            self?.downloadStatus.accept(.failed)
+        DispatchQueue.global().async {[unowned self] in
+            self.m3u8Parser.parser(url: self.m3u8URL, name: self.fileName, success: { [weak self] _ in
+                guard let self = self else { return }
+                self.downloader.tsPlaylist = self.m3u8Parser.tsPlaylist
+                self.downloader.m3u8Data = self.m3u8Parser.m3u8Data
+                self.downloader.startDownload()
+            }) { [weak self] error in
+                print(error)
+                showMessage(message: error.localizedDescription)
+                self?.downloadStatus.accept(.failed)
+            }
         }
     }
 
     func getPlayPath() -> String? {
-        return VideoPlayServer.getServer(name: directoryName)
+        return VideoPlayServer.getServer(name: self.directoryName)
     }
 }
 
 class VideoPlayServer {
     static var currentServer: GCDWebDAVServer?
     public static func getServer(name: String) -> String? {
-        currentServer?.stop()
+        self.currentServer?.stop()
         let dirPath = getDocumentsDirectory().appendingPathComponent("Downloads").appendingPathComponent(name).path
-        currentServer = GCDWebDAVServer(uploadDirectory: dirPath)
-        currentServer?.start()
+        self.currentServer = GCDWebDAVServer(uploadDirectory: dirPath)
+        self.currentServer?.start(withPort: 8080, bonjourName: nil)
         let playPath = "http://127.0.0.1:8080/" + name + ".m3u8"
         return playPath
     }

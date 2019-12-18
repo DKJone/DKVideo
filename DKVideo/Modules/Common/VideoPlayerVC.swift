@@ -18,7 +18,8 @@ class VideoPlayerVC: ViewController {
 
     var urlStr = ""{
         didSet{
-            isDownloaded = false
+            isDownloaded = urlStr.contains(".mp4")
+//            playerView.playerConfig.maxCacheItem = isDownloaded ? 1 : 0
         }
     }
     let playerView = SuperPlayerView()

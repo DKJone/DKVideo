@@ -24,9 +24,14 @@ class DKM3u8Helper {
             try self.parse(url: url)
         } catch {
             if let aError = error as? M3u8ParaseError {
-                failed?(aError)
+                DispatchQueue.main.async {
+                    failed?(aError)
+                }
+
             } else {
-                failed?(.Other)
+                DispatchQueue.main.async {
+                    failed?(.Other)
+                }
             }
         }
     }
@@ -109,7 +114,9 @@ class DKM3u8Helper {
 
         let writeData: Data = header.data(using: .utf8)!
         try! writeData.write(to: filePath)
-        self.success?(filePath)
+        DispatchQueue.main.async { [weak self] in
+            self?.success?(filePath)
+        }
     }
 
     private func checkOrCreatedM3u8Directory() {
@@ -121,16 +128,26 @@ class DKM3u8Helper {
     }
 }
 
-enum M3u8ParaseError: String, Error {
+enum M3u8ParaseError: CustomStringConvertible, Error {
     /// 非法的url路径
-    case URLInvalid = "非法的url路径"
+    case URLInvalid
     /// m3u8文件内容获取失败
-    case EmptyM3u8Content = "m3u8文件内容获取失败"
+    case EmptyM3u8Content
     /// 没有获取到对应码率的视频
-    case NoSteamInfo = "没有获取到对应码率的视频"
+    case NoSteamInfo
     /// ts文件信息获取失败
-    case NoEXTINFinfo = "ts文件信息获取失败"
-    case Other = "解析失败,未知错误"
+    case NoEXTINFinfo
+    case Other
+
+    var description: String{
+        switch self {
+        case .URLInvalid :return "非法的url路径"
+        case .EmptyM3u8Content :return "m3u8文件内容获取失败"
+        case .NoSteamInfo :return "没有获取到对应码率的视频"
+        case .NoEXTINFinfo :return "ts文件信息获取失败"
+        case .Other :return "解析失败,未知错误"
+        }
+    }
 }
 
 struct M3u8TsSegmentModel {

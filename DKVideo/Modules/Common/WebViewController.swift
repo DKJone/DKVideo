@@ -6,31 +6,26 @@
 //  Copyright © 2019 DKJone. All rights reserved.
 //
 
+import FloatingPanel
 import Foundation
 import WebKit
 class WebViewController: ViewController {
     var requestURL: URL?
     var webView = WebView()
     var exitURLParam = [String]()
+    var fpc: FloatingPanelController!
     override func makeUI() {
         super.makeUI()
         contentView.addSubview(webView)
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.evaluateJavaScript("document.documentElement.style.webkitTouchCallout='none';", completionHandler: nil)
         webView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         /// 返回按钮
         let navibackBtn = UIBarButtonItem(image: R.image.icon_navigation_back(), style: .plain, target: self, action: #selector(back))
         let space1 = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         space1.width = 10
-        let closeBtn = UIBarButtonItem(image: R.image.icon_navigation_close(), style: .plain, target: self, action:#selector(naviBack))
+        let closeBtn = UIBarButtonItem(image: R.image.icon_navigation_close(), style: .plain, target: self, action: #selector(naviBack))
         navigationItem.leftBarButtonItems = [navibackBtn, space1, closeBtn]
-        webView.configuration.allowsInlineMediaPlayback = false
-        webView.allowsBackForwardNavigationGestures = true
-        // 禁用长按弹出框
-        let userScript = WKUserScript(source: "document.documentElement.style.webkitTouchCallout='none';", injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        webView.configuration.userContentController.addUserScript(userScript)
+
         if requestURL != nil { webView.load(.init(url: requestURL!)) }
         // 刷新按钮
         let refreshBtn = UIButton(type: .custom)
@@ -42,21 +37,16 @@ class WebViewController: ViewController {
         let vipBtn = UIButton(type: .custom)
         vipBtn.setImage(R.image.icon_vip(), for: [])
         vipBtn.rx.tap.bind { [unowned self] _ in
-            var litterWebView = self.view.viewWithTag(1970) as? WKWebView
-            if litterWebView == nil {
-                litterWebView = WKWebView()
-                litterWebView!.tag = 1970
-                self.view.insertSubview(litterWebView!, at: 0)
-                litterWebView!.frame = CGRect(x: 100, y: 100, width: 10, height: 10)
-            }
+            self.fpc.move(to: .full, animated: true)
+            let litterWebView = self.view.viewWithTag(1970) as? UIWebView
             if UserDefaults.currentVip.url.isEmpty {
                 UserDefaults.currentVip = VipAnalysis.vips.first!
             }
             var htmlurl = (self.webView.url?.absoluteString ?? "").nsString
-            if htmlurl.contains("youku"){
+            if htmlurl.contains("youku") {
                 htmlurl = htmlurl.substring(with: NSRange(location: 0, length: htmlurl.range(of: "html").location + 4)) as NSString
             }
-            litterWebView!.load(URLRequest(urlString: "\(UserDefaults.currentVip.url)\(htmlurl)")!)
+            litterWebView!.loadRequest(URLRequest(urlString: "\(UserDefaults.currentVip.url)\(htmlurl)")!)
 
         }.disposed(by: rx.disposeBag)
         vipBtn.rx.longPressGesture().when(.recognized).bind { [unowned self] _ in
@@ -79,32 +69,60 @@ class WebViewController: ViewController {
             pcBtn.isSelected.toggle()
             self.webView.reload()
         }.disposed(by: rx.disposeBag)
+        // 复制网页地址
+        let copyBtn = UIButton(type: .custom)
+        copyBtn.setTitle("复制地址", for: [])
+        copyBtn.rx.tap.bind { [unowned self] _ in
+            UIPasteboard.general.string = self.webView.url?.absoluteString
+        }.disposed(by: rx.disposeBag)
 
         navigationItem.rightBarButtonItems = [
             .init(customView: refreshBtn),
             .init(customView: vipBtn),
             .init(customView: pcBtn),
+            .init(customView: copyBtn),
         ]
 
+        // fpc
+        fpc = FloatingPanelController()
+        fpc.delegate = self
+
+        // Initialize FloatingPanelController and add the view
+        fpc.surfaceView.backgroundColor = .clear
+        fpc.surfaceView.layer.cornerRadius = 9.0
+
+        fpc.surfaceView.shadowHidden = false
+        let vipVC = ViewController()
+        let litterWebView = UIWebView()
+        litterWebView.allowsInlineMediaPlayback = true
+        litterWebView.mediaPlaybackRequiresUserAction = false
+        litterWebView.tag = 1970
+        litterWebView.scrollView.showsHorizontalScrollIndicator = false
+        vipVC.view.addSubview(litterWebView)
+        litterWebView.snp.makeConstraints { make in
+            make.edges.equalTo(UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0))
+        }
+
+        fpc.set(contentViewController: vipVC)
+        fpc.track(scrollView: litterWebView.scrollView)
+        fpc.addPanel(toParent: self)
         themeService.rx
-            .bind({ $0.textGray }, to: [pcBtn.rx.titleColor(for: []), pcBtn.rx.titleColor(for: .selected)])
+            .bind({ $0.textGray }, to: [pcBtn.rx.titleColor(for: []), pcBtn.rx.titleColor(for: .selected), copyBtn.rx.titleColor(for: [])])
             .bind({ $0.secondary }, to: [navibackBtn.rx.tintColor, closeBtn.rx.tintColor])
+            .bind({ $0.background }, to: [fpc.view.rx.backgroundColor, litterWebView.rx.backgroundColor])
             .disposed(by: rx.disposeBag)
     }
 
     override func adjustLeftBarButtonItem() {}
     @objc func back() {
-        let needExit = exitURLParam.contains {
-            webView.url?.absoluteString.contains($0) ?? false
-        }
-
-        if webView.backForwardList.backList.isEmpty || needExit {
+        if !webView.canGoBack {
             naviBack()
         } else {
             webView.goBack()
         }
     }
-    @objc func naviBack(){
+
+    @objc func naviBack() {
         if (navigationController?.children.count ?? 0) > 1 {
             navigationController?.popViewController()
         } else if presentingViewController != nil { // presented
@@ -112,9 +130,17 @@ class WebViewController: ViewController {
         }
     }
 
+    func show(requestUrl: URL) {
+        if isVisible {
+            webView.load(URLRequest(url: requestUrl))
+        } else {
+            requestURL = requestUrl
+            UIViewController.currentViewController()?.navigationController?.pushViewController(self)
+        }
+    }
 }
 
-extension WebViewController: WKNavigationDelegate, WKUIDelegate {
+extension WebView: WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {}
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {}
@@ -135,27 +161,123 @@ extension WebViewController: WKNavigationDelegate, WKUIDelegate {
         webView.load(navigationAction.request)
         return nil
     }
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        //阻止跳转到第三方视频播放APP
-        decisionHandler(.allow)
-        //decisionHandler(WKNavigationActionPolicy.init(rawValue: WKNavigationActionPolicy.allow.rawValue + 2)!)
-    }
-    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
 
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        // 阻止跳转到第三方视频播放APP
+        decisionHandler(WKNavigationActionPolicy(rawValue: WKNavigationActionPolicy.allow.rawValue + 2)!)
     }
+
+    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {}
+
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         decisionHandler(.allow)
     }
-
 }
 
-class WebView: WKWebView {
-    override func load(_ request: URLRequest) -> WKNavigation? {
-        if request.httpBody.isNilOrEmpty{
-            return super.load(request)
-        }else{
-            print(request.httpBody)
-            return super.load(request)
+// MARK: - FPC Delegate
+
+extension WebViewController: FloatingPanelControllerDelegate {
+    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+        return PanelLandscapeLayout()
+    }
+}
+
+// MARK: - layout
+
+public class PanelLandscapeLayout: FloatingPanelLayout {
+    public var initialPosition: FloatingPanelPosition {
+        return .hidden
+    }
+
+    public var supportedPositions: Set<FloatingPanelPosition> {
+        return [.full, .tip, .half, .hidden]
+    }
+
+    public func insetFor(position: FloatingPanelPosition) -> CGFloat? {
+        switch position {
+        case .full: return 16.0
+        case .tip: return 69.0
+        default: return nil
         }
+    }
+
+    public func prepareLayout(surfaceView: UIView, in view: UIView) -> [NSLayoutConstraint] {
+        return [
+            surfaceView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8.0),
+            surfaceView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8.0),
+        ]
+    }
+
+    public func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
+        return 0.0
+    }
+}
+
+// MARK: - Webview
+
+class WebView: UIView {
+    var customWebView: UIView!
+    init() {
+        UserDefaults.useWKWebview = true
+        customWebView = UserDefaults.useWKWebview ? WKWebView() : UIWebView()
+        super.init(frame: .zero)
+        addSubview(customWebView)
+        customWebView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        if let webView = customWebView as? WKWebView {
+            webView.navigationDelegate = self
+            webView.uiDelegate = self
+            webView.evaluateJavaScript("document.documentElement.style.webkitTouchCallout='none';", completionHandler: nil)
+            webView.configuration.allowsInlineMediaPlayback = false
+            webView.allowsBackForwardNavigationGestures = true
+            // 禁用长按弹出框
+            let userScript = WKUserScript(source: "document.documentElement.style.webkitTouchCallout='none';", injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+            webView.configuration.userContentController.addUserScript(userScript)
+        } else {
+            (customWebView as? UIWebView)?.allowsInlineMediaPlayback = true
+            (customWebView as? UIWebView)?.mediaPlaybackRequiresUserAction = false
+        }
+        themeService.rx
+            .bind({ $0.background }, to: [rx.backgroundColor, customWebView!.rx.backgroundColor])
+            .disposed(by: rx.disposeBag)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func load(_ request: URLRequest) {
+        if let webView = customWebView as? WKWebView {
+            webView.load(request)
+        } else if let webView = customWebView as? UIWebView {
+            webView.loadRequest(request)
+        }
+    }
+
+    var url: URL? {
+        if let webView = customWebView as? WKWebView {
+            return webView.url
+        } else if let webView = customWebView as? UIWebView {
+            return webView.request?.url
+        }
+        return nil
+    }
+
+    func reload() {
+        (customWebView as? UIWebView)?.reload()
+        (customWebView as? WKWebView)?.reload()
+    }
+
+    var canGoBack: Bool {
+        if let webView = customWebView as? WKWebView {
+            return webView.canGoBack
+        } else if let webView = customWebView as? UIWebView {
+            return webView.canGoBack
+        }
+        return false
+    }
+
+    func goBack() {
+        (customWebView as? UIWebView)?.goBack()
+        (customWebView as? WKWebView)?.goBack()
     }
 }

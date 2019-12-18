@@ -19,8 +19,10 @@ PODS:
   - ChameleonFramework/Default (2.1.0)
   - ChameleonFramework/Swift (2.1.0):
     - ChameleonFramework/Default
+  - Differentiator (4.0.1)
   - DZNEmptyDataSet (1.8.1)
   - FLEX (3.1.0)
+  - FloatingPanel (1.7.1)
   - GCDWebServer/Core (3.5.3)
   - GCDWebServer/WebDAV (3.5.3):
     - GCDWebServer/Core
@@ -74,6 +76,10 @@ PODS:
   - RxCocoa (5.0.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
+  - RxDataSources (4.0.1):
+    - Differentiator (~> 4.0)
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
   - RxGesture (3.0.1):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
@@ -145,6 +151,7 @@ DEPENDENCIES:
   - ChameleonFramework/Swift (from `https://github.com/luckychris/Chameleon`)
   - DZNEmptyDataSet
   - FLEX
+  - FloatingPanel
   - GCDWebServer/WebDAV
   - HandyJSON
   - IQKeyboardManagerSwift
@@ -152,6 +159,7 @@ DEPENDENCIES:
   - "NSObject+Rx"
   - NVActivityIndicatorView
   - R.swift
+  - RxDataSources
   - RxGesture
   - RxOptional
   - RxSwift (~> 5.0.0)
@@ -170,8 +178,10 @@ SPEC REPOS:
     - AFNetworking
     - Aspects
     - AttributedLib
+    - Differentiator
     - DZNEmptyDataSet
     - FLEX
+    - FloatingPanel
     - GCDWebServer
     - HandyJSON
     - IQKeyboardManagerSwift
@@ -183,6 +193,7 @@ SPEC REPOS:
     - R.swift
     - R.swift.Library
     - RxCocoa
+    - RxDataSources
     - RxGesture
     - RxOptional
     - RxRelay
@@ -213,8 +224,10 @@ SPEC CHECKSUMS:
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   AttributedLib: ad537d4f9285ed57fc4d9103dd83c2ee6be1582b
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  Differentiator: 886080237d9f87f322641dedbc5be257061b0602
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   FLEX: e7a0cc5ca79419d3b0cf0d39fa7a46cb39cec7fd
+  FloatingPanel: 2f87246071476cf05d77ba3f50a373ca4b04549e
   GCDWebServer: c0ab22c73e1b84f358d1e2f74bf6afd1c60829f2
   HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
   IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
@@ -226,6 +239,7 @@ SPEC CHECKSUMS:
   R.swift: 8cbc4fc69b740305b6a17c8a8ed968eb788962d9
   R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
+  RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
   RxOptional: b1fcd60856807a564c0215c2184b8d33e7826dc2
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
@@ -242,6 +256,6 @@ SPEC CHECKSUMS:
   TXLiteAVSDK_Player: a3799add98c6802e382972d98cc0e7bacb50984f
   XLPagerTabStrip: 61c57fd61f611ee5f01ff1495ad6fbee8bf496c5
 
-PODFILE CHECKSUM: 75a3d5eb91da93a8f1609339f1dd05328eb641d9
+PODFILE CHECKSUM: 91aa4492471c59026c15e74788e36692f159d1b9
 
 COCOAPODS: 1.8.4

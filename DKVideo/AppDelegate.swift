@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if !url.absoluteString.contains("DKVideo://"){return false}
         let videoUrl = url.absoluteString.removingPrefix("DKVideo://")
         print("openUrl:\(videoUrl)")
         let webvc = WebViewController()

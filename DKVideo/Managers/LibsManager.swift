@@ -57,9 +57,9 @@ class LibsManager: NSObject {
 
     func configTheme() {
         var theme = ThemeType.currentTheme()
-        theme = theme.withColor(color: .blue)
 //        theme = theme.toggled()
         themeService.switch(theme)
+        
         if #available(iOS 13.0, *) {
             globalStatusBarStyle.accept(.default)
         } else {

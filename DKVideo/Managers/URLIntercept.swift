@@ -20,7 +20,7 @@ class URLIntercept: URLProtocol {
         if URLProtocol.property(forKey: URLInterceptKey, in: request) as? Bool ?? false {
             return false
         }
-        if request.allHTTPHeaderFields.isNilOrEmpty{
+        if request.allHTTPHeaderFields.isNilOrEmpty {
             print("##########\(request.description)")
             return false
         }
@@ -39,24 +39,17 @@ class URLIntercept: URLProtocol {
     /// - Parameter request: 当前的网络请求
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
         var mutableReqeust: URLRequest = request
-
         guard let urlStr = request.url?.absoluteString else { return request }
-        // 广告拦截标识字符
-        let adStrings = ["img.09mk.cn", "img.xiaohui2.cn", ".xiaohui", ".apple.com", "img2.", "sysapr.cn"]
-        adStrings.forEach { str in
-            if urlStr.contains(str) { mutableReqeust.url = nil }
-        }
-
         // 视频播放拦截
-        print("+++++++++++++"+urlStr.pathExtension)
+        print("+++++++++++++" + urlStr.pathExtension)
         if urlStr.pathExtension.hasPrefix("m3u8") {
 //            mutableReqeust.url = nil
             print("=========video=======\n\(urlStr)")
-            
+
             DispatchQueue.main.async {
                 let vc = VideoPlayerVC.shared
-                vc.urlStr = urlStr
-                if !vc.isVisible{
+                if !vc.isVisible {
+                    vc.urlStr = urlStr
                     VideoPlayerVC.show()
                 }
             }
@@ -68,15 +61,23 @@ class URLIntercept: URLProtocol {
         // 给我们处理过的请求设置一个标识符, 防止无限循环,
         var request = self.request
         URLProtocol.setProperty(true, forKey: URLInterceptKey, in: request as! NSMutableURLRequest)
+
+        // 广告拦截标识字符
+        var isAD = false
+        adString.forEach { str in
+            if (request.url?.absoluteString ?? "").contains(str) { isAD = true; return }
+        }
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        if UserDefaults.isPCAgent{
-            request.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36", forHTTPHeaderField:"User-Agent" )
-        }else{
+        if UserDefaults.isPCAgent {
+            request.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Safari/605.1.15", forHTTPHeaderField: "User-Agent")
+        } else {
             request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148", forHTTPHeaderField: "User-Agent")
         }
-        self.newTask = session.dataTask(with: request)
-        print("====REQUEST:====\(request.url?.absoluteString ?? "")")
-        self.newTask?.resume()
+        if isAD {} else {
+            self.newTask = session.dataTask(with: request)
+            print("====REQUEST:====\(request.url?.absoluteString ?? "")")
+            self.newTask?.resume()
+        }
     }
 
     override func stopLoading() {
@@ -98,6 +99,3 @@ extension URLIntercept: URLSessionDelegate, URLSessionDataDelegate {
         client?.urlProtocolDidFinishLoading(self)
     }
 }
-
-
-

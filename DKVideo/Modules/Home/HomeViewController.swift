@@ -25,15 +25,14 @@ class HomeViewController: ViewController {
         imgV.contentMode = .center
         textView.rx.controlEvent(.editingDidEndOnExit).bind(onNext: { [unowned self] _ in
             if let url = URL(string: textView.text!) {
-                let webVC = WebViewController()
-                webVC.requestURL = url
-                self.navigationController?.pushViewController(webVC)
+                currentWebVC.show(requestUrl: url)
             } else {
                 showMessage(message: "请输入正确的地址")
             }
         }).disposed(by: rx.disposeBag)
         themeService.rx
             .bind({ $0.background }, to: textView.rx.backgroundColor)
+            .bind({ $0.background }, to: searchBar.rx.backgroundColor)
             .disposed(by: self.rx.disposeBag)
         return searchBar
     }()
@@ -82,22 +81,20 @@ class HomeViewController: ViewController {
                 cell.setup(data: model)
             }.disposed(by: rx.disposeBag)
         subject.onNext(menus)
-        collectionView.rx.modelSelected(SubMenu.self).bind { [unowned self] item in
-            let webVC = WebViewController()
-            webVC.requestURL = item.url
-            self.navigationController?.pushViewController(webVC)
+        collectionView.rx.modelSelected(SubMenu.self).bind { item in
+            if let url = item.url {
+                currentWebVC.show(requestUrl: url)
+            }
         }.disposed(by: rx.disposeBag)
-
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if waitToPresentVC != nil{
+        if waitToPresentVC != nil {
             present(waitToPresentVC!, animated: true, completion: nil)
             waitToPresentVC = nil
         }
     }
-
 }
 
 extension HomeViewController {

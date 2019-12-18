@@ -9,6 +9,7 @@
 import Foundation
 import HandyJSON
 struct VipAnalysis: HandyJSON, ListAble {
+    var icon: UIImage?
     var text: String {
         return title
     }

@@ -54,4 +54,14 @@ extension UserDefaults {
         get { return standard.bool(forKey: #function) }
         set { standard.setValue(newValue, forKey: #function) }
     }
+    /// 使用WKWebview
+    static var useWKWebview: Bool {
+        get { return standard.bool(forKey: #function) }
+        set { standard.setValue(newValue, forKey: #function) }
+    }
+    // 显示解析的Webview
+    static var showVipWebView: Bool {
+        get { return standard.bool(forKey: #function) }
+        set { standard.setValue(newValue, forKey: #function) }
+    }
 }

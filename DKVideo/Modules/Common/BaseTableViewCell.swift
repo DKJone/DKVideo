@@ -35,6 +35,13 @@ class BaseTableViewCell: TableViewCell {
         return view
     }()
 
+    lazy var textsStackView: UIStackView = {
+        let views: [UIView] = [self.titleLabel, self.detailLabel]
+        let view = UIStackView(arrangedSubviews: views)
+        view.spacing = 2
+        return view
+    }()
+
     let titleLabel: UILabel = UILabel(fontSize: 14, text: "")
 
     let detailLabel: UILabel = UILabel(fontSize: 12, text: "")
@@ -58,6 +65,7 @@ class BaseTableViewCell: TableViewCell {
             .disposed(by: rx.disposeBag)
 
         stackView.addArrangedSubview(leftImageView)
+        stackView.addArrangedSubview(textsStackView)
         stackView.addArrangedSubview(rightImageView)
         stackView.snp.remakeConstraints { make in
             let inset: CGFloat = 15
