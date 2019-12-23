@@ -43,15 +43,18 @@ class SettingViewController: TableViewController {
 
         tableView.rx.modelSelected(SettingItem.self).bind { [unowned self] item in
             if item.viewModel.title.value == "主题设置" {
-                var themes = ColorTheme.allValues.map { CommonListData(id: $0.rawValue.string, text: $0.title, selected: UserDefaults.standard.themeColor == $0.rawValue, icon: UIImage(color: $0.color, size: CGSize(width: 30, height: 30))) }
+                let themes = ColorTheme.allValues.map { CommonListData(id: $0.rawValue.string, text: $0.title, selected: UserDefaults.standard.themeColor == $0.rawValue, icon: UIImage(color: $0.color, size: CGSize(width: 30, height: 30))) }
 
-                showSelectVC(inVC: self, listDataProvider: { list in
+                showSelectVC(inVC: self,  height: CGFloat(themes.count * 44),listDataProvider: { list in
                     list = themes
                 }) { list in
                     let theme = ColorTheme(rawValue: Int(list.first!.id)!)!
                     themeService.switch(ThemeType.currentTheme().withColor(color: theme))
                 }
             }
+        }.disposed(by: rx.disposeBag)
+        tableView.rx.itemSelected.bind { [unowned self](indexPath) in
+            self.tableView.deselectRow(at: indexPath, animated: true)
         }.disposed(by: rx.disposeBag)
     }
 }

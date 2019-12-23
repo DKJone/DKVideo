@@ -33,6 +33,7 @@ class HomeViewController: ViewController {
         themeService.rx
             .bind({ $0.background }, to: textView.rx.backgroundColor)
             .bind({ $0.background }, to: searchBar.rx.backgroundColor)
+            .bind({ $0.textGray }, to: textView.rx.placeholderColor)
             .disposed(by: self.rx.disposeBag)
         return searchBar
     }()
@@ -85,6 +86,7 @@ class HomeViewController: ViewController {
             if let url = item.url {
                 currentWebVC.show(requestUrl: url)
             }
+//            self.navigationController?.pushViewController(TestWebVC())
         }.disposed(by: rx.disposeBag)
     }
 
@@ -118,11 +120,11 @@ extension HomeViewController {
             super.init(frame: frame)
             contentView.addSubviews([titleLab, imageView])
             themeService.rx
-                .bind({ $0.primary }, to: rx.backgroundColor)
+                .bind({ $0.primaryDark }, to: rx.backgroundColor)
                 .bind({ $0.text }, to: titleLab.rx.textColor)
                 .disposed(by: rx.disposeBag)
             imageView.snp.makeConstraints { make in
-                make.edges.equalTo(UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
+                make.edges.equalTo(UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
             }
             imageView.contentMode = .scaleAspectFit
 

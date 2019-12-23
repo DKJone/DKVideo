@@ -26,6 +26,7 @@ extension SettingViewController {
             themeService.rx
                 .bind({ $0.secondary }, to: [aSwitch.rx.tintColor, aSwitch.rx.onTintColor])
                 .bind({ $0.secondary }, to: leftImageView.rx.tintColor)
+                .bind({ $0.primary }, to: containerView.rx.backgroundColor)
                 .disposed(by: rx.disposeBag)
         }
 
@@ -47,6 +48,9 @@ extension SettingViewController {
             rightImageView.snp.remakeConstraints { make in
                 make.size.equalTo(25)
             }
+            themeService.rx
+                .bind({ $0.primary }, to: containerView.rx.backgroundColor)
+                .disposed(by: rx.disposeBag)
         }
 
         override func bindViewModel<T: SettingCellViewModel>(viewModel: T) {

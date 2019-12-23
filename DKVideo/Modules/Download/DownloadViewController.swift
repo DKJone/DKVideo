@@ -37,6 +37,7 @@ class DownloadViewController: TableViewController {
         let stateBtn = UIButton(type: .custom)
         let playBtn = UIButton(type: .custom)
         let deleteBtn = UIButton(type: .custom)
+        let shareBtn = UIButton(type: .custom)
         let progressLabel = UILabel(fontSize: 12, textColor: .textGray(), text: "已下载：1.00%")
         let nameLabel = UILabel(fontSize: 14, text: "文件1")
         override func makeUI() {
@@ -44,7 +45,7 @@ class DownloadViewController: TableViewController {
             containerView.snp.makeConstraints { make in
                 make.height.equalTo(65).priority(.high)
             }
-            containerView.addSubviews([stateBtn, playBtn, deleteBtn, progressLabel, nameLabel])
+            containerView.addSubviews([stateBtn, playBtn, deleteBtn, shareBtn, progressLabel, nameLabel])
             stateBtn.snp.makeConstraints { make in
                 make.left.top.equalTo(10)
                 make.width.height.equalTo(45)
@@ -59,10 +60,16 @@ class DownloadViewController: TableViewController {
                 make.top.equalTo(nameLabel.snp.bottom).offset(10)
             }
             playBtn.snp.makeConstraints { make in
+                make.right.equalTo(-150)
+                make.top.equalTo(nameLabel.snp.bottom).offset(3)
+                make.size.equalTo(CGSize(width: 50, height: 30))
+            }
+            shareBtn.snp.makeConstraints { make in
                 make.right.equalTo(-80)
                 make.top.equalTo(nameLabel.snp.bottom).offset(3)
                 make.size.equalTo(CGSize(width: 50, height: 30))
             }
+            shareBtn.setTitle("分享", for: [])
             playBtn.setTitle("播放", for: [])
             deleteBtn.setTitle("删除", for: [])
             deleteBtn.snp.makeConstraints { make in
@@ -71,11 +78,13 @@ class DownloadViewController: TableViewController {
                 make.size.equalTo(CGSize(width: 50, height: 30))
             }
             playBtn.borderWidth = 0.5
+            shareBtn.borderWidth = 0.5
             deleteBtn.borderWidth = 0.5
             deleteBtn.borderColor = .red
             deleteBtn.setTitleColor(.red, for: [])
             themeService.rx
-                .bind({ $0.secondary }, to: [playBtn.rx.titleColor(for: []), playBtn.rx.borderColor])
+                .bind({ $0.secondary }, to: [playBtn.rx.titleColor(for: []), playBtn.rx.borderColor,
+                                             shareBtn.rx.titleColor(for: []), shareBtn.rx.borderColor])
                 .bind({ $0.secondaryDark }, to: stateBtn.rx.titleColor(for: []))
                 .bind({ $0.primary }, to: containerView.rx.backgroundColor)
                 .disposed(by: rx.disposeBag)
@@ -107,6 +116,16 @@ class DownloadViewController: TableViewController {
                     } else {
                         DownLoadManage.shared.deleteDownload(fileName: info.fileName)
                     }
+                })
+            }.disposed(by: disposeBag)
+            shareBtn.rx.tap.bind { _ in
+                var playPath = info.getPlayPath()
+                UIViewController.currentViewController()?.showAlert(title: "重要提示", message: "已复制播放地址，您可以发送给局域网(同一WIFI下)的好友，她可以直接播放无需下载，如果您正在使用移动热点，分享及播放不会消耗流量。同一时间您只能分享一集(好友收看期间您可以收看同一集，播放其他视频，好友可能无法继续观看)", buttonTitles: ["确定"], highlightedButtonIndex: 0, completion: { _ in
+                    if let ip = VideoPlayServer.currentServer?.serverURL?.absoluteString {
+                        playPath = playPath?.replacingOccurrences(of: "http://127.0.0.1:8080/", with: ip)
+                    }
+                    UIPasteboard.general.string = playPath
+
                 })
 
             }.disposed(by: disposeBag)

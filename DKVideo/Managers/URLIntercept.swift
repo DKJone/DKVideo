@@ -8,9 +8,11 @@
 
 import SuperPlayer
 import SwifterSwift
+import RxRelay
 let URLInterceptKey = "Intercepted"
 /// 网络请求拦截器
 class URLIntercept: URLProtocol {
+    static let videoUrl = BehaviorRelay<String>(value: "")
     var newTask: URLSessionTask?
     /// 返回是否监控此条网络请求
     /// - Parameter request: 网络请求
@@ -42,17 +44,17 @@ class URLIntercept: URLProtocol {
         guard let urlStr = request.url?.absoluteString else { return request }
         // 视频播放拦截
         print("+++++++++++++" + urlStr.pathExtension)
-        if urlStr.pathExtension.hasPrefix("m3u8") {
+        if urlStr.pathExtension.hasPrefix("m3u8") && !urlStr.contains("jx.688ing"){
 //            mutableReqeust.url = nil
-            print("=========video=======\n\(urlStr)")
-
-            DispatchQueue.main.async {
-                let vc = VideoPlayerVC.shared
-                if !vc.isVisible {
-                    vc.urlStr = urlStr
-                    VideoPlayerVC.show()
-                }
-            }
+            print("=========video=======\(urlStr)")
+            videoUrl.accept(urlStr)
+//            DispatchQueue.main.async {
+//                let vc = VideoPlayerVC.shared
+//                if !vc.isVisible {
+//                    vc.urlStr = urlStr
+//                    VideoPlayerVC.show()
+//                }
+//            }
         }
         return mutableReqeust
     }

@@ -8,14 +8,15 @@
 
 import Foundation
 
-let adString = [
+let adString = ["ajiajdiji"]
+    var bccc = [
     // 优酷
     "atm.youku.com", "Fvid.atm.youku.com", "html.atm.youku.com", "valb.atm.youku.com", "valf.atm.youku.com", "valo.atm.youku.com", "valp.atm.youku.com", "lstat.youku.com", "speed.lstat.youku.com", "urchin.lstat.youku.com", "stat.youku.com", "static.lstat.youku.com", "valc.atm.youku.com", "vid.atm.youku.com", "walp.atm.youku.com",
     // 百度：
     //  "a.baidu.com", "baidutv.baidu.com", "bar.baidu.com", "c.baidu.com", "cjhq.baidu.com", "cpro.baidu.com", "drmcmm.baidu.com", "e.baidu.com", "eiv.baidu.com", "hc.baidu.com", "hm.baidu.com", "ma.baidu.com", "nsclick.baidu.com", "spcode.baidu.com", "tk.baidu.com", "union.baidu.com", "ucstat.baidu.com", "utility.baidu.com", "utk.baidu.com", "focusbaiduafp.allyes.com",
 
     // 奇艺",
-    "afp.qiyi.com", "focusbaiduafp.allyes.com",
+//    "afp.qiyi.com", "focusbaiduafp.allyes.com",
 
     // CNTV"
     "a.cctv.com", "a.cntv.cn", "ad.cctv.com", "d.cntv.cn", "adguanggao.eee114.com", "cctv.adsunion.com",
@@ -49,5 +50,5 @@ let adString = [
 
     // 腾讯视频屏蔽"
     "adslvfile.qq.com", "adsfile.qq.com", "play.qq.com", "adslvfile.qq.com", "tj.video.qq.com", "vv.video.qq.com", "livep.l.qq.com", "rcgi.video.qq.com", "aid.video.qq.com", "pinghot.qq.com", "54kfqq.com", "qqbm.zhuiying.net", "qqbmad.mycode8.net", "vhotlxp.video.qq.com", "livem.l.qq.com",
-    "img.09mk.cn", "img.xiaohui2.cn", ".xiaohui", ".apple.com", "img2.", "sysapr.cn", "vlive.qqvideo", "msg.qy.net","image.kdmmm"
+    "img.09mk.cn", "img.xiaohui2.cn", ".xiaohui", ".apple.com", "img2.", "sysapr.cn", "vlive.qqvideo", "image.kdmmm","baidu.com"
 ]

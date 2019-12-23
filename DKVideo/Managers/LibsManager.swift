@@ -40,6 +40,12 @@ class LibsManager: NSObject {
         DispatchQueue.global().async {
            print(DownLoadManage.shared)
         }
+        if !UserDefaults.defaultConfig{
+            UserDefaults.useWKWebview = true
+            UserDefaults.showVipWebView = true
+            UserDefaults.isPCAgent = true
+            UserDefaults.defaultConfig = true
+        }
 
     }
 

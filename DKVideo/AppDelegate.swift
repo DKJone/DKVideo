@@ -7,6 +7,8 @@
 //
 
 import Aspects
+import RxSwift
+import SuperPlayer
 import UIKit
 import WebKit
 @UIApplicationMain
@@ -21,26 +23,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             _ = method("http")
             _ = method("https")
         }
-        
+
         URLProtocol.registerClass(URLIntercept.self)
         LibsManager.shared.configTheme()
+        URLIntercept.videoUrl.filterEmpty().distinctUntilChanged {
+            $1.contains("127.0.0.1") || $0 == $1
+        }.throttle(.seconds(2), scheduler: MainScheduler.asyncInstance).observeOn(MainScheduler.asyncInstance).bind { urlStr in
+            let videoVC = VideoPlayerVC.shared
+            if videoVC.isVisible {
+                let playerModel = videoVC.playerView.playerModel
+                let playurl = SuperPlayerUrl()
+                playurl.title = Date().string(withFormat: "yyyyMMddHHmmss1")
+                playurl.url = urlStr
+                playerModel?.multiVideoURLs.append(playurl)
+                videoVC.playerView.play(with: playerModel!)
+                print("----------\(playurl)------")
+            } else {
+                videoVC.urlStr = urlStr
+                VideoPlayerVC.show()
+            }
+        }.disposed(by: rx.disposeBag)
 
         return true
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        if !url.absoluteString.contains("DKVideo://"){return false}
+        if !url.absoluteString.contains("DKVideo://") { return false }
         let videoUrl = url.absoluteString.removingPrefix("DKVideo://")
         print("openUrl:\(videoUrl)")
         let webvc = WebViewController()
-        webvc.requestURL = URL(string:  videoUrl)
-        if let navc = UINavigationController.currentViewController()?.navigationController{
+        webvc.requestURL = URL(string: videoUrl)
+        if let navc = UINavigationController.currentViewController()?.navigationController {
             navc.pushViewController(webvc)
-        }else{
+        } else {
             waitToPresentVC = nil
         }
         return true
     }
 }
 
-var waitToPresentVC :UIViewController?
+var waitToPresentVC: UIViewController?

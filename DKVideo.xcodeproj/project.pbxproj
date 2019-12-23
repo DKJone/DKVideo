@@ -56,6 +56,7 @@
 		11BD5AFA2397BE8C00C69E63 /* VideoShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 11BD5AF02397BE8C00C69E63 /* VideoShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		11BD5B012397CF3000C69E63 /* ShareVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BD5B002397CF3000C69E63 /* ShareVC.swift */; };
 		11CBFAE523A8E70F000043C9 /* AdStringFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBFAE423A8E70F000043C9 /* AdStringFile.swift */; };
+		11E0C2BF23AB427600F86440 /* TestWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E0C2BE23AB427600F86440 /* TestWebVC.swift */; };
 		11ECE6B623A71718006D4F28 /* DownLoadManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ECE6B523A71718006D4F28 /* DownLoadManage.swift */; };
 		11F8955623A109C00075AAF3 /* DKM3u8Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F8955523A109C00075AAF3 /* DKM3u8Helper.swift */; };
 		11FCB152239DEEBA00DB45F9 /* Platform.json in Resources */ = {isa = PBXBuildFile; fileRef = 11FCB151239DEEBA00DB45F9 /* Platform.json */; };
@@ -144,6 +145,7 @@
 		11BD5AFF2397C48C00C69E63 /* VideoShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VideoShare.entitlements; sourceTree = "<group>"; };
 		11BD5B002397CF3000C69E63 /* ShareVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareVC.swift; sourceTree = "<group>"; };
 		11CBFAE423A8E70F000043C9 /* AdStringFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdStringFile.swift; sourceTree = "<group>"; };
+		11E0C2BE23AB427600F86440 /* TestWebVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWebVC.swift; sourceTree = "<group>"; };
 		11ECE6B523A71718006D4F28 /* DownLoadManage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownLoadManage.swift; sourceTree = "<group>"; };
 		11F8955523A109C00075AAF3 /* DKM3u8Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKM3u8Helper.swift; sourceTree = "<group>"; };
 		11FCB151239DEEBA00DB45F9 /* Platform.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Platform.json; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				11A5193E2399280C005A924C /* PageViewController.swift */,
 				11A5193F2399280C005A924C /* NavigationController.swift */,
 				11FCB161239E730700DB45F9 /* VideoPlayerVC.swift */,
+				11E0C2BE23AB427600F86440 /* TestWebVC.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -592,6 +595,7 @@
 				11A5196C239A42D3005A924C /* BaseTableViewCell.swift in Sources */,
 				11A5194F2399280D005A924C /* CommonSelectVC.swift in Sources */,
 				11A519402399280D005A924C /* ViewController.swift in Sources */,
+				11E0C2BF23AB427600F86440 /* TestWebVC.swift in Sources */,
 				11A5196E239A44C5005A924C /* SettingViewCells.swift in Sources */,
 				11A51968239A2EDB005A924C /* SettingViewController.swift in Sources */,
 				11A519592399EC2D005A924C /* KafkaRefresh+Rx.swift in Sources */,

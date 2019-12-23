@@ -24,7 +24,7 @@ extension UIViewController {
         if let presented = base?.presentedViewController {
             return currentViewController(base: presented)
         }
-        if let main = (base as? UISplitViewController)?.children.first {
+        if let main = (base as? UISplitViewController)?.children.last {
             return currentViewController(base: main)
         }
         return base

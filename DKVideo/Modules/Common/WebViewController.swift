@@ -14,6 +14,7 @@ class WebViewController: ViewController {
     var webView = WebView()
     var exitURLParam = [String]()
     var fpc: FloatingPanelController!
+    var didEvaluatedJS = true
     override func makeUI() {
         super.makeUI()
         contentView.addSubview(webView)
@@ -29,7 +30,7 @@ class WebViewController: ViewController {
         if requestURL != nil { webView.load(.init(url: requestURL!)) }
         // 刷新按钮
         let refreshBtn = UIButton(type: .custom)
-        refreshBtn.setImage(R.image.icon_navigation_refresh()?.filled(withColor: .secondary()), for: [])
+        refreshBtn.setImage(R.image.icon_navigation_refresh()?.template, for: [])
         refreshBtn.rx.tap.bind { [unowned self] _ in
             self.webView.reload()
         }.disposed(by: rx.disposeBag)
@@ -37,13 +38,14 @@ class WebViewController: ViewController {
         let vipBtn = UIButton(type: .custom)
         vipBtn.setImage(R.image.icon_vip(), for: [])
         vipBtn.rx.tap.bind { [unowned self] _ in
-            self.fpc.move(to: .full, animated: true)
+            self.fpc.move(to: UserDefaults.showVipWebView ? .half : .hidden, animated: true)
+            self.didEvaluatedJS = false
             let litterWebView = self.view.viewWithTag(1970) as? UIWebView
             if UserDefaults.currentVip.url.isEmpty {
                 UserDefaults.currentVip = VipAnalysis.vips.first!
             }
             var htmlurl = (self.webView.url?.absoluteString ?? "").nsString
-            if htmlurl.contains("youku") {
+            if htmlurl.contains("youku"), htmlurl.contains("html") {
                 htmlurl = htmlurl.substring(with: NSRange(location: 0, length: htmlurl.range(of: "html").location + 4)) as NSString
             }
             litterWebView!.loadRequest(URLRequest(urlString: "\(UserDefaults.currentVip.url)\(htmlurl)")!)
@@ -97,6 +99,7 @@ class WebViewController: ViewController {
         litterWebView.allowsInlineMediaPlayback = true
         litterWebView.mediaPlaybackRequiresUserAction = false
         litterWebView.tag = 1970
+        litterWebView.delegate = self
         litterWebView.scrollView.showsHorizontalScrollIndicator = false
         vipVC.view.addSubview(litterWebView)
         litterWebView.snp.makeConstraints { make in
@@ -108,8 +111,10 @@ class WebViewController: ViewController {
         fpc.addPanel(toParent: self)
         themeService.rx
             .bind({ $0.textGray }, to: [pcBtn.rx.titleColor(for: []), pcBtn.rx.titleColor(for: .selected), copyBtn.rx.titleColor(for: [])])
-            .bind({ $0.secondary }, to: [navibackBtn.rx.tintColor, closeBtn.rx.tintColor])
-            .bind({ $0.background }, to: [fpc.view.rx.backgroundColor, litterWebView.rx.backgroundColor])
+            .bind({ $0.secondary }, to: [navibackBtn.rx.tintColor, closeBtn.rx.tintColor, refreshBtn.rx.tintColor,
+                                         copyBtn.rx.titleColor(for: []), pcBtn.rx.titleColor(for: []),
+                                         pcBtn.rx.titleColor(for: .selected)])
+            .bind({ $0.background }, to: [vipVC.view.rx.backgroundColor, litterWebView.rx.backgroundColor])
             .disposed(by: rx.disposeBag)
     }
 
@@ -140,6 +145,17 @@ class WebViewController: ViewController {
     }
 }
 
+extension WebViewController: UIWebViewDelegate {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        if !(webView.request?.url?.absoluteString ?? "").contains("jx.688ing.com") || didEvaluatedJS { return }
+        didEvaluatedJS.toggle()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            let htmlurl = (self.webView.url?.absoluteString ?? "").nsString
+            webView.stringByEvaluatingJavaScript(from: "document.getElementById('movie-text').value = '\(htmlurl)',document.getElementById('movie-btn').click()")
+        }
+    }
+}
+
 extension WebView: WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {}
 
@@ -164,7 +180,8 @@ extension WebView: WKNavigationDelegate, WKUIDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         // 阻止跳转到第三方视频播放APP
-        decisionHandler(WKNavigationActionPolicy(rawValue: WKNavigationActionPolicy.allow.rawValue + 2)!)
+        decisionHandler(.allow)
+//        decisionHandler(WKNavigationActionPolicy(rawValue: WKNavigationActionPolicy.allow.rawValue + 2)!)
     }
 
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {}
@@ -196,7 +213,9 @@ public class PanelLandscapeLayout: FloatingPanelLayout {
     public func insetFor(position: FloatingPanelPosition) -> CGFloat? {
         switch position {
         case .full: return 16.0
+        case .half: return min(screenWidth, screenHeight) / 2
         case .tip: return 69.0
+        case .hidden: return -1
         default: return nil
         }
     }
@@ -218,7 +237,6 @@ public class PanelLandscapeLayout: FloatingPanelLayout {
 class WebView: UIView {
     var customWebView: UIView!
     init() {
-        UserDefaults.useWKWebview = true
         customWebView = UserDefaults.useWKWebview ? WKWebView() : UIWebView()
         super.init(frame: .zero)
         addSubview(customWebView)
@@ -232,10 +250,14 @@ class WebView: UIView {
             // 禁用长按弹出框
             let userScript = WKUserScript(source: "document.documentElement.style.webkitTouchCallout='none';", injectionTime: .atDocumentEnd, forMainFrameOnly: true)
             webView.configuration.userContentController.addUserScript(userScript)
+
         } else {
             (customWebView as? UIWebView)?.allowsInlineMediaPlayback = true
             (customWebView as? UIWebView)?.mediaPlaybackRequiresUserAction = false
         }
+        themeService.attrsStream.bind { [unowned self] theme in
+            (self.customWebView as? WKWebView)?.evaluateJavaScript("document.body.style.backgroundColor=\"\(theme.background.hexString)\"", completionHandler: nil)
+        }.disposed(by: rx.disposeBag)
         themeService.rx
             .bind({ $0.background }, to: [rx.backgroundColor, customWebView!.rx.backgroundColor])
             .disposed(by: rx.disposeBag)
