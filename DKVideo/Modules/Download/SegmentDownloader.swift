@@ -1,5 +1,5 @@
 import Foundation
-
+import Tiercel
 protocol SegmentDownloaderDelegate {
     func segmentDownloadSucceeded(with downloader: SegmentDownloader)
     func segmentDownloadFailed(with downloader: SegmentDownloader)
@@ -12,13 +12,11 @@ class SegmentDownloader: NSObject {
     var duration: Float
     var index: Int
 
-    lazy var downloadSession: URLSession = {
-        let configuration = URLSessionConfiguration.default
-        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-        return session
+    lazy var downloadSession: SessionManager = {
+      appDelegate.sessionManagerBackground
     }()
 
-    var downloadTask: URLSessionDownloadTask?
+    var downloadTask: DownloadTask?
     var isDownloading = false
     var finishedDownload = false
 
@@ -35,31 +33,52 @@ class SegmentDownloader: NSObject {
     func startDownload() {
         if checkIfIsDownloaded() {
             finishedDownload = true
-
             delegate?.segmentDownloadSucceeded(with: self)
         } else {
             let url = downloadURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-
             guard let taskURL = URL(string: url) else { return }
-
-            downloadTask = downloadSession.downloadTask(with: taskURL)
-            downloadTask?.resume()
             isDownloading = true
+            downloadTask = downloadSession.download(taskURL, headers: nil, fileName: fileName)
+            downloadTask?.success { [weak self] task in
+                guard task.status == .succeeded else{return}
+                guard let self = self else { return }
+                let destinationURL = self.generateFilePath()
+
+                self.finishedDownload = true
+                self.isDownloading = false
+
+                if FileManager.default.fileExists(atPath: destinationURL.path) {
+                    return
+                } else {
+                    do {
+                        let furl = URL(fileURLWithPath: task.filePath)
+                        try FileManager.default.moveItem(at: furl, to: destinationURL)
+                        self.delegate?.segmentDownloadSucceeded(with: self)
+                    } catch let error as NSError {
+                        print(error.localizedDescription)
+                    }
+                }
+            }.failure { [weak self] _ in
+                guard let self = self else { return }
+                self.finishedDownload = false
+                self.isDownloading = false
+                self.delegate?.segmentDownloadFailed(with: self)
+            }
         }
     }
 
     func cancelDownload() {
-        downloadTask?.cancel()
+        downloadSession.cancel(downloadURL)
         isDownloading = false
     }
 
     func pauseDownload() {
-        downloadTask?.suspend()
+        downloadSession.suspend(downloadURL)
         isDownloading = false
     }
 
     func resumeDownload() {
-        downloadTask?.resume()
+        downloadSession.start(downloadURL)
         isDownloading = true
     }
 
@@ -75,34 +94,5 @@ class SegmentDownloader: NSObject {
 
     func generateFilePath() -> URL {
         return getDocumentsDirectory().appendingPathComponent("Downloads").appendingPathComponent(filePath).appendingPathComponent(fileName)
-    }
-}
-
-extension SegmentDownloader: URLSessionDownloadDelegate {
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        let destinationURL = generateFilePath()
-
-        finishedDownload = true
-        isDownloading = false
-
-        if FileManager.default.fileExists(atPath: destinationURL.path) {
-            return
-        } else {
-            do {
-                try FileManager.default.moveItem(at: location, to: destinationURL)
-                delegate?.segmentDownloadSucceeded(with: self)
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-        }
-    }
-
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if error != nil {
-            finishedDownload = false
-            isDownloading = false
-
-            delegate?.segmentDownloadFailed(with: self)
-        }
     }
 }

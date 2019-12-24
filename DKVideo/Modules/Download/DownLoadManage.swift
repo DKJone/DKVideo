@@ -14,7 +14,9 @@ class DownLoadManage {
 
     init() {
         let m3u8Dir = getDocumentsDirectory().appendingPathComponent("m3u8Files")
-        if let enums = FileManager.default.enumerator(atPath: m3u8Dir.path) {
+        if let enums = FileManager.default.enumerator(atPath: m3u8Dir.path)?.sorted(by: {
+            ($0 as? String).unwrapped(or: "") > ($1 as? String).unwrapped(or: "")
+        }) {
             enums.forEach { path in
                 if let fileName = path as? String {
                     if fileName.hasSuffix(".m3u8") {
@@ -35,25 +37,22 @@ class DownLoadManage {
                     self.deleteDownload(fileName: fileName)
                     newDownload.downloadStatus.filter { $0 == .started }.take(1).bind { [unowned self] _ in
                         self.downloads.accept(self.downloads.value.filter { $0.directoryName != fileName } + [newDownload])
-                    }
-                    newDownload.parse()
+                    }.disposed(by: newDownload.rx.disposeBag)
+                    newDownload.parse(autoStart: autoStart)
 
                 } else {
                     self.downloads.value.first(where: { $0.directoryName == fileName })?.parse()
                 }
             })
         } else {
-            newDownload.downloadStatus.filter { $0 == .started }.take(1).bind { [unowned self] _ in
-                self.downloads.accept(self.downloads.value.filter { $0.directoryName != fileName } + [newDownload])
-            }
-            newDownload.parse()
-            if !autoStart {
-                newDownload.downloader.cancelDownloadSegment()
-            }
+//            newDownload.downloadStatus.filter { $0 == .started }.take(1).bind { [unowned self] _ in
+            downloads.accept(downloads.value.filter { $0.directoryName != fileName } + [newDownload])
+//            }
+            newDownload.parse(autoStart: autoStart)
         }
     }
 
-    func deleteDownload(fileName: String) {
+    func deleteDownload(fileName: String, success: (() -> Void)? = nil) {
         let filePath = getDocumentsDirectory()
             .appendingPathComponent("m3u8Files")
             .appendingPathComponent(fileName + ".m3u8")
@@ -63,16 +62,29 @@ class DownLoadManage {
             try? FileManager.default.removeItem(atPath: filePath)
         }
 
-        deleteDownloadContent(fileName: fileName)
+        deleteDownloadContent(fileName: fileName, success: success)
         downloads.accept(downloads.value.filter { $0.fileName != fileName })
     }
 
-    func deleteDownloadContent(fileName: String) {
+    func deleteDownloadContent(fileName: String, success: (() -> Void)? = nil) {
         let filePath = getDocumentsDirectory()
             .appendingPathComponent("Downloads")
             .appendingPathComponent(fileName.replacingOccurrences(of: ".m3u8", with: ""))
             .path
-
+        try? String(contentsOfFile: getDocumentsDirectory()
+            .appendingPathComponent("m3u8Files")
+            .appendingPathComponent(fileName + ".m3u8")
+            .path)
+            .split(separator: "\n")
+            .filter { $0.contains("http") }
+            .enumerated().reversed()
+            .forEach { offset, element in
+                appDelegate.sessionManagerBackground.remove(String(element), completely: true, onMainQueue: false) { _ in
+                    if offset == 0 {
+                        success?()
+                    }
+                }
+            }
         if FileManager.default.fileExists(atPath: filePath) {
             try? FileManager.default.removeItem(atPath: filePath)
         }

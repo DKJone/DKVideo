@@ -114,12 +114,14 @@ struct R: Rswift.Validatable {
   }
   #endif
 
-  /// This `R.file` struct is generated, and contains static references to 3 files.
+  /// This `R.file` struct is generated, and contains static references to 4 files.
   struct file {
     /// Resource file `Platform.json`.
     static let platformJson = Rswift.FileResource(bundle: R.hostingBundle, name: "Platform", pathExtension: "json")
     /// Resource file `Vipwebsites.json`.
     static let vipwebsitesJson = Rswift.FileResource(bundle: R.hostingBundle, name: "Vipwebsites", pathExtension: "json")
+    /// Resource file `blank.caf`.
+    static let blankCaf = Rswift.FileResource(bundle: R.hostingBundle, name: "blank", pathExtension: "caf")
     /// Resource file `index.html`.
     static let indexHtml = Rswift.FileResource(bundle: R.hostingBundle, name: "index", pathExtension: "html")
 
@@ -132,6 +134,12 @@ struct R: Rswift.Validatable {
     /// `bundle.url(forResource: "Vipwebsites", withExtension: "json")`
     static func vipwebsitesJson(_: Void = ()) -> Foundation.URL? {
       let fileResource = R.file.vipwebsitesJson
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "blank", withExtension: "caf")`
+    static func blankCaf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.blankCaf
       return fileResource.bundle.url(forResource: fileResource)
     }
 

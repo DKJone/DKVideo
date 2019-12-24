@@ -29,6 +29,7 @@ target 'DKVideo' do
    pod 'SwiftyJSON'
    pod 'AttributedLib'
    pod 'HandyJSON'
+   pod 'Tiercel'
   # RX
     pod 'RxSwiftExt'
     pod 'NSObject+Rx'

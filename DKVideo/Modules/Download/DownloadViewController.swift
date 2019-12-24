@@ -109,11 +109,12 @@ class DownloadViewController: TableViewController {
                 }
             }.disposed(by: disposeBag)
             deleteBtn.rx.tap.bind { _ in
-                UIViewController.currentViewController()?.showAlert(title: "确认删除", message: "将要删除下载内容", buttonTitles: ["重新下载", "删除内容"], highlightedButtonIndex: 0, completion: { index in
+                UIViewController.currentViewController()?.showAlert(title: "确认删除", message: "将要删除下载内容", buttonTitles: ["重新下载", "删除内容","取消"], highlightedButtonIndex: 0, completion: { index in
                     if index == 0 {
-                        DownLoadManage.shared.deleteDownloadContent(fileName: info.fileName)
-                        info.parse()
-                    } else {
+                        DownLoadManage.shared.deleteDownloadContent(fileName: info.fileName){
+                            info.parse()
+                        }
+                    } else if index == 1{
                         DownLoadManage.shared.deleteDownload(fileName: info.fileName)
                     }
                 })

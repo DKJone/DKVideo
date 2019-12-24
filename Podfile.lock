@@ -141,6 +141,7 @@ PODS:
   - SwifterSwift/SwiftStdlib (5.1.0)
   - SwifterSwift/UIKit (5.1.0)
   - SwiftyJSON (5.0.0)
+  - Tiercel (2.3.0)
   - Toast-Swift (5.0.0)
   - TXLiteAVSDK_Player (6.8.7969)
   - XLPagerTabStrip (9.0.0)
@@ -170,6 +171,7 @@ DEPENDENCIES:
   - SuperPlayer
   - SwifterSwift
   - SwiftyJSON
+  - Tiercel
   - Toast-Swift
   - XLPagerTabStrip
 
@@ -206,6 +208,7 @@ SPEC REPOS:
     - SuperPlayer
     - SwifterSwift
     - SwiftyJSON
+    - Tiercel
     - Toast-Swift
     - TXLiteAVSDK_Player
     - XLPagerTabStrip
@@ -252,10 +255,11 @@ SPEC CHECKSUMS:
   SuperPlayer: 485a9f5b203cd5cb5e4be26843454fca5916ad53
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  Tiercel: 87c75f90ec3152ee2a278591b41f606b383af2af
   Toast-Swift: 36f4720243c8582c2be243a60a51e193c761f541
   TXLiteAVSDK_Player: a3799add98c6802e382972d98cc0e7bacb50984f
   XLPagerTabStrip: 61c57fd61f611ee5f01ff1495ad6fbee8bf496c5
 
-PODFILE CHECKSUM: 91aa4492471c59026c15e74788e36692f159d1b9
+PODFILE CHECKSUM: 80a3aaf9544a1b06b4604f33c40323df34e08620
 
 COCOAPODS: 1.8.4

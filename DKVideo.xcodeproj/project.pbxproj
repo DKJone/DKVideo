@@ -55,6 +55,7 @@
 		11BD5AF32397BE8C00C69E63 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BD5AF22397BE8C00C69E63 /* ShareViewController.swift */; };
 		11BD5AFA2397BE8C00C69E63 /* VideoShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 11BD5AF02397BE8C00C69E63 /* VideoShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		11BD5B012397CF3000C69E63 /* ShareVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BD5B002397CF3000C69E63 /* ShareVC.swift */; };
+		11C794FD23B077E000E6DF66 /* blank.caf in Resources */ = {isa = PBXBuildFile; fileRef = 11C794FC23B077E000E6DF66 /* blank.caf */; };
 		11CBFAE523A8E70F000043C9 /* AdStringFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBFAE423A8E70F000043C9 /* AdStringFile.swift */; };
 		11E0C2BF23AB427600F86440 /* TestWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E0C2BE23AB427600F86440 /* TestWebVC.swift */; };
 		11ECE6B623A71718006D4F28 /* DownLoadManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ECE6B523A71718006D4F28 /* DownLoadManage.swift */; };
@@ -144,6 +145,7 @@
 		11BD5AF72397BE8C00C69E63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11BD5AFF2397C48C00C69E63 /* VideoShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VideoShare.entitlements; sourceTree = "<group>"; };
 		11BD5B002397CF3000C69E63 /* ShareVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareVC.swift; sourceTree = "<group>"; };
+		11C794FC23B077E000E6DF66 /* blank.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = blank.caf; sourceTree = "<group>"; };
 		11CBFAE423A8E70F000043C9 /* AdStringFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdStringFile.swift; sourceTree = "<group>"; };
 		11E0C2BE23AB427600F86440 /* TestWebVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWebVC.swift; sourceTree = "<group>"; };
 		11ECE6B523A71718006D4F28 /* DownLoadManage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownLoadManage.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 		11A519552399E7D5005A924C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				11C794FC23B077E000E6DF66 /* blank.caf */,
 				11FCB157239E1D8000DB45F9 /* Vipwebsites.json */,
 				11A5195C2399F6FD005A924C /* index.html */,
 				11A519562399E9A0005A924C /* R.generated.swift */,
@@ -460,6 +463,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C794FD23B077E000E6DF66 /* blank.caf in Resources */,
 				11BD5AD82396790500C69E63 /* LaunchScreen.storyboard in Resources */,
 				11FCB158239E1D8000DB45F9 /* Vipwebsites.json in Resources */,
 				11A5195D2399F6FE005A924C /* index.html in Resources */,
@@ -781,7 +785,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dkjone.DKVideo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -804,7 +808,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dkjone.DKVideo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

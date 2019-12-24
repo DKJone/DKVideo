@@ -22,16 +22,16 @@ open class M3U8Downloader: NSObject {
         self.downloader.progress.bind(to: self.progress).disposed(by: self.rx.disposeBag)
     }
 
-    open func parse() {
-        DispatchQueue.global().async {[unowned self] in
+    open func parse(autoStart: Bool = true) {
+        DispatchQueue.global().async { [unowned self] in
             self.m3u8Parser.parser(url: self.m3u8URL, name: self.fileName, success: { [weak self] _ in
                 guard let self = self else { return }
                 self.downloader.tsPlaylist = self.m3u8Parser.tsPlaylist
                 self.downloader.m3u8Data = self.m3u8Parser.m3u8Data
-                self.downloader.startDownload()
+                if autoStart { self.downloader.startDownload() }
             }) { [weak self] error in
                 print(error)
-                showMessage(message: error.localizedDescription)
+                showMessage(message: error.description)
                 self?.downloadStatus.accept(.failed)
             }
         }

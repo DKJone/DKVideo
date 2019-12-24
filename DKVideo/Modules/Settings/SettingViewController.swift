@@ -51,6 +51,10 @@ class SettingViewController: TableViewController {
                     let theme = ColorTheme(rawValue: Int(list.first!.id)!)!
                     themeService.switch(ThemeType.currentTheme().withColor(color: theme))
                 }
+            }else if item.viewModel.title.value == "关于"{
+                let webVC = WebViewController()
+                webVC.requestURL = URL(string: "https://www.jianshu.com/p/f9d06ed27f24")
+                self.navigationController?.pushViewController(webVC)
             }
         }.disposed(by: rx.disposeBag)
         tableView.rx.itemSelected.bind { [unowned self](indexPath) in

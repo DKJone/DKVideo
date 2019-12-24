@@ -27,11 +27,6 @@ open class VideoDownloader {
     var m3u8Data: String = ""
     var tsPlaylist = M3u8Playlist()
     var segmentDownloaders = [SegmentDownloader]()
-//    {
-//        willSet{
-//            segmentDownloaders.forEach{ $0.cancelDownload()}
-//        }
-//    }
     var tsFilesIndex = 0
     var neededDownloadTsFilesCount = 0
     var downloadURLs = [String]()

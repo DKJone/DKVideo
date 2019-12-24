@@ -54,6 +54,17 @@ extension UserDefaults {
         get { return standard.bool(forKey: #function) }
         set { standard.setValue(newValue, forKey: #function) }
     }
+    /// APP后台时下载
+    static var backgroundDownload: Bool {
+        get { return standard.bool(forKey: #function) }
+        set { standard.setValue(newValue, forKey: #function) }
+    }
+
+    /// APP使用流量时下载
+    static var downloadWithoutWifi: Bool {
+        get { return standard.bool(forKey: #function) }
+        set { standard.setValue(newValue, forKey: #function) }
+    }
 
     /// 使用WKWebview
     static var useWKWebview: Bool {

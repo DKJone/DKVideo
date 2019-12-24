@@ -48,13 +48,6 @@ class URLIntercept: URLProtocol {
 //            mutableReqeust.url = nil
             print("=========video=======\(urlStr)")
             videoUrl.accept(urlStr)
-//            DispatchQueue.main.async {
-//                let vc = VideoPlayerVC.shared
-//                if !vc.isVisible {
-//                    vc.urlStr = urlStr
-//                    VideoPlayerVC.show()
-//                }
-//            }
         }
         return mutableReqeust
     }

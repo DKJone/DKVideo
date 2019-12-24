@@ -50,14 +50,14 @@ class DKM3u8Helper {
         } else if m3u8Content.contains("EXT-X-STREAM-INF") {
             let arr = m3u8Content.split(separator: "\n").map { String($0) }
             if let preIndex = arr.firstIndex(where: { $0.contains("#EXT-X-STREAM-INF") }) {
-                if var newUrl = arr[safe: preIndex + 1] {
+                if let newUrl = arr[safe: preIndex + 1] {
                     if !newUrl.hasPrefix("http") {
-                        newUrl = url.replacingOccurrences(of: url.split(separator: "/").last ?? "", with: "") + newUrl
-                        try self.parse(url: newUrl)
+                        try self.parse(url: self.getFullPath(url: url, newUrl: newUrl))
                     }
                 }
+            } else {
+                throw M3u8ParaseError.NoSteamInfo
             }
-            throw M3u8ParaseError.NoSteamInfo
         } else {
             guard m3u8Content.range(of: "#EXTINF:") != nil else {
                 throw M3u8ParaseError.NoEXTINFinfo
@@ -85,7 +85,7 @@ class DKM3u8Helper {
 
                 var segmentURL = segmentArray[1]
                 if !segmentURL.hasPrefix("http") {
-                    segmentURL = url.replacingOccurrences(of: url.split(separator: "/").last ?? "", with: "") + segmentURL
+                    segmentURL = self.getFullPath(url: url, newUrl: segmentURL)
                 }
                 segmentModel.duration = segmentDuration
                 segmentModel.locationURL = segmentURL
@@ -110,7 +110,7 @@ class DKM3u8Helper {
 
         var header = "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:15\n"
         header.append(allts)
-        header.append("#EXT-X-ENDLIST\n")
+        header.append("\n#EXT-X-ENDLIST\n")
 
         let writeData: Data = header.data(using: .utf8)!
         try! writeData.write(to: filePath)
@@ -126,6 +126,15 @@ class DKM3u8Helper {
             try! FileManager.default.createDirectory(at: filePath, withIntermediateDirectories: true, attributes: nil)
         }
     }
+
+    internal func getFullPath(url: String, newUrl: String) -> String {
+        var url = url
+        url = url.replacingOccurrences(of: url.pathComponents.last!, with: "")
+        return newUrl
+            .split(separator: "/")
+            .filter { !url.contains($0) }
+            .reduce(url) { $0.appendingPathComponent(String($1)) }
+    }
 }
 
 enum M3u8ParaseError: CustomStringConvertible, Error {
@@ -139,13 +148,13 @@ enum M3u8ParaseError: CustomStringConvertible, Error {
     case NoEXTINFinfo
     case Other
 
-    var description: String{
+    var description: String {
         switch self {
-        case .URLInvalid :return "非法的url路径"
-        case .EmptyM3u8Content :return "m3u8文件内容获取失败"
-        case .NoSteamInfo :return "没有获取到对应码率的视频"
-        case .NoEXTINFinfo :return "ts文件信息获取失败"
-        case .Other :return "解析失败,未知错误"
+        case .URLInvalid: return "非法的url路径"
+        case .EmptyM3u8Content: return "m3u8文件内容获取失败"
+        case .NoSteamInfo: return "没有获取到对应码率的视频"
+        case .NoEXTINFinfo: return "ts文件信息获取失败"
+        case .Other: return "解析失败,未知错误"
         }
     }
 }
