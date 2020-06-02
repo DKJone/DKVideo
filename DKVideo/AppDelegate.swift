@@ -12,7 +12,7 @@ import SuperPlayer
 import Tiercel
 import UIKit
 import WebKit
-
+import AVFoundation
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
 @UIApplicationMain

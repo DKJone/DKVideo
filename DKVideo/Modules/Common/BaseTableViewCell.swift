@@ -11,7 +11,7 @@ import Foundation
 class BaseTableViewCell: TableViewCell {
     var viewModel = TableCellViewModel()
 
-    func bindViewModel<T: TableCellViewModel>(viewModel: T) {
+    func bindViewModel(viewModel: TableCellViewModel) {
         self.viewModel = viewModel
 
         viewModel.title.asDriver().drive(titleLabel.rx.text).disposed(by: rx.disposeBag)

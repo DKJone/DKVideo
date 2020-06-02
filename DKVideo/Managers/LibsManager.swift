@@ -51,7 +51,7 @@ class LibsManager: NSObject {
 
     func showFlex() {
         #if DEBUG
-             FLEXManager.shared()?.showExplorer()
+             FLEXManager.shared.showExplorer()
         #endif
     }
 

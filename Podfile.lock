@@ -1,18 +1,18 @@
 PODS:
-  - AFNetworking (3.2.1):
-    - AFNetworking/NSURLSession (= 3.2.1)
-    - AFNetworking/Reachability (= 3.2.1)
-    - AFNetworking/Security (= 3.2.1)
-    - AFNetworking/Serialization (= 3.2.1)
-    - AFNetworking/UIKit (= 3.2.1)
-  - AFNetworking/NSURLSession (3.2.1):
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.1)
-  - AFNetworking/Security (3.2.1)
-  - AFNetworking/Serialization (3.2.1)
-  - AFNetworking/UIKit (3.2.1):
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
   - Aspects (1.4.1)
   - AttributedLib (3.0.0)
@@ -21,59 +21,59 @@ PODS:
     - ChameleonFramework/Default
   - Differentiator (4.0.1)
   - DZNEmptyDataSet (1.8.1)
-  - FLEX (3.1.0)
-  - FloatingPanel (1.7.1)
-  - GCDWebServer/Core (3.5.3)
-  - GCDWebServer/WebDAV (3.5.3):
+  - FLEX (4.1.1)
+  - FloatingPanel (1.7.4)
+  - GCDWebServer/Core (3.5.4)
+  - GCDWebServer/WebDAV (3.5.4):
     - GCDWebServer/Core
   - HandyJSON (5.0.1)
-  - IQKeyboardManagerSwift (6.5.4)
-  - KafkaRefresh (1.4.7):
-    - KafkaRefresh/Category (= 1.4.7)
-    - KafkaRefresh/Configuration (= 1.4.7)
-    - KafkaRefresh/Core (= 1.4.7)
-    - KafkaRefresh/Default (= 1.4.7)
-    - KafkaRefresh/Style (= 1.4.7)
-    - KafkaRefresh/UIKit (= 1.4.7)
-  - KafkaRefresh/Category (1.4.7)
-  - KafkaRefresh/Configuration (1.4.7):
+  - IQKeyboardManagerSwift (6.5.5)
+  - KafkaRefresh (1.4.8):
+    - KafkaRefresh/Category (= 1.4.8)
+    - KafkaRefresh/Configuration (= 1.4.8)
+    - KafkaRefresh/Core (= 1.4.8)
+    - KafkaRefresh/Default (= 1.4.8)
+    - KafkaRefresh/Style (= 1.4.8)
+    - KafkaRefresh/UIKit (= 1.4.8)
+  - KafkaRefresh/Category (1.4.8)
+  - KafkaRefresh/Configuration (1.4.8):
     - KafkaRefresh/UIKit/FootKit
     - KafkaRefresh/UIKit/HeadKit
-  - KafkaRefresh/Core (1.4.7):
+  - KafkaRefresh/Core (1.4.8):
     - KafkaRefresh/Category
-  - KafkaRefresh/Default (1.4.7):
+  - KafkaRefresh/Default (1.4.8):
     - KafkaRefresh/Style
-  - KafkaRefresh/Style (1.4.7)
-  - KafkaRefresh/UIKit (1.4.7):
-    - KafkaRefresh/UIKit/FootKit (= 1.4.7)
-    - KafkaRefresh/UIKit/HeadKit (= 1.4.7)
-    - KafkaRefresh/UIKit/LayerKit (= 1.4.7)
-  - KafkaRefresh/UIKit/FootKit (1.4.7):
-    - KafkaRefresh/Category
-    - KafkaRefresh/Core
-    - KafkaRefresh/Default
-    - KafkaRefresh/Style
-    - KafkaRefresh/UIKit/LayerKit
-  - KafkaRefresh/UIKit/HeadKit (1.4.7):
+  - KafkaRefresh/Style (1.4.8)
+  - KafkaRefresh/UIKit (1.4.8):
+    - KafkaRefresh/UIKit/FootKit (= 1.4.8)
+    - KafkaRefresh/UIKit/HeadKit (= 1.4.8)
+    - KafkaRefresh/UIKit/LayerKit (= 1.4.8)
+  - KafkaRefresh/UIKit/FootKit (1.4.8):
     - KafkaRefresh/Category
     - KafkaRefresh/Core
     - KafkaRefresh/Default
     - KafkaRefresh/Style
     - KafkaRefresh/UIKit/LayerKit
-  - KafkaRefresh/UIKit/LayerKit (1.4.7):
+  - KafkaRefresh/UIKit/HeadKit (1.4.8):
+    - KafkaRefresh/Category
+    - KafkaRefresh/Core
+    - KafkaRefresh/Default
+    - KafkaRefresh/Style
+    - KafkaRefresh/UIKit/LayerKit
+  - KafkaRefresh/UIKit/LayerKit (1.4.8):
     - KafkaRefresh/Category
     - KafkaRefresh/Default
   - Masonry (1.1.0)
-  - MMLayout (0.2.0)
+  - MMLayout (0.3.0)
   - "NSObject+Rx (5.0.2)":
     - RxSwift (~> 5.0)
   - NVActivityIndicatorView (4.8.0):
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
-  - R.swift (5.1.0):
-    - R.swift.Library (~> 5.1.0)
-  - R.swift.Library (5.1.0)
-  - RxCocoa (5.0.1):
+  - R.swift (5.2.2):
+    - R.swift.Library (~> 5.2.0)
+  - R.swift.Library (5.2.0)
+  - RxCocoa (5.1.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
   - RxDataSources (4.0.1):
@@ -86,7 +86,7 @@ PODS:
   - RxOptional (4.1.0):
     - RxCocoa (~> 5)
     - RxSwift (~> 5)
-  - RxRelay (5.0.1):
+  - RxRelay (5.1.1):
     - RxSwift (~> 5)
   - RxSwift (5.0.1)
   - RxSwiftExt (5.2.0):
@@ -103,47 +103,51 @@ PODS:
   - RxViewController (1.0.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
-  - SDWebImage (5.3.3):
-    - SDWebImage/Core (= 5.3.3)
-  - SDWebImage/Core (5.3.3)
+  - SDWebImage (5.7.3):
+    - SDWebImage/Core (= 5.7.3)
+  - SDWebImage/Core (5.7.3)
   - SnapKit (5.0.1)
-  - SuperPlayer (3.1.5):
-    - AFNetworking
-    - Masonry
-    - MMLayout
-    - SDWebImage
-    - SuperPlayer/Player (= 3.1.5)
-  - SuperPlayer/Player (3.1.5):
-    - AFNetworking
-    - Masonry
-    - MMLayout
-    - SDWebImage
-    - TXLiteAVSDK_Player (= 6.8.7969)
-  - SwifterSwift (5.1.0):
-    - SwifterSwift/AppKit (= 5.1.0)
-    - SwifterSwift/CoreGraphics (= 5.1.0)
-    - SwifterSwift/CoreLocation (= 5.1.0)
-    - SwifterSwift/Dispatch (= 5.1.0)
-    - SwifterSwift/Foundation (= 5.1.0)
-    - SwifterSwift/MapKit (= 5.1.0)
-    - SwifterSwift/SceneKit (= 5.1.0)
-    - SwifterSwift/SpriteKit (= 5.1.0)
-    - SwifterSwift/SwiftStdlib (= 5.1.0)
-    - SwifterSwift/UIKit (= 5.1.0)
-  - SwifterSwift/AppKit (5.1.0)
-  - SwifterSwift/CoreGraphics (5.1.0)
-  - SwifterSwift/CoreLocation (5.1.0)
-  - SwifterSwift/Dispatch (5.1.0)
-  - SwifterSwift/Foundation (5.1.0)
-  - SwifterSwift/MapKit (5.1.0)
-  - SwifterSwift/SceneKit (5.1.0)
-  - SwifterSwift/SpriteKit (5.1.0)
-  - SwifterSwift/SwiftStdlib (5.1.0)
-  - SwifterSwift/UIKit (5.1.0)
+  - SuperPlayer (3.2.5):
+    - AFNetworking (~> 4.0)
+    - Masonry (~> 1.1.0)
+    - MMLayout (~> 0.3.0)
+    - SDWebImage (~> 5.0)
+    - SuperPlayer/Player (= 3.2.5)
+  - SuperPlayer/Player (3.2.5):
+    - AFNetworking (~> 4.0)
+    - Masonry (~> 1.1.0)
+    - MMLayout (~> 0.3.0)
+    - SDWebImage (~> 5.0)
+    - TXLiteAVSDK_Player (= 7.2.8932)
+  - SwifterSwift (5.2.0):
+    - SwifterSwift/AppKit (= 5.2.0)
+    - SwifterSwift/CoreAnimation (= 5.2.0)
+    - SwifterSwift/CoreGraphics (= 5.2.0)
+    - SwifterSwift/CoreLocation (= 5.2.0)
+    - SwifterSwift/Dispatch (= 5.2.0)
+    - SwifterSwift/Foundation (= 5.2.0)
+    - SwifterSwift/MapKit (= 5.2.0)
+    - SwifterSwift/SceneKit (= 5.2.0)
+    - SwifterSwift/SpriteKit (= 5.2.0)
+    - SwifterSwift/StoreKit (= 5.2.0)
+    - SwifterSwift/SwiftStdlib (= 5.2.0)
+    - SwifterSwift/UIKit (= 5.2.0)
+  - SwifterSwift/AppKit (5.2.0)
+  - SwifterSwift/CoreAnimation (5.2.0)
+  - SwifterSwift/CoreGraphics (5.2.0)
+  - SwifterSwift/CoreLocation (5.2.0)
+  - SwifterSwift/Dispatch (5.2.0)
+  - SwifterSwift/Foundation (5.2.0)
+  - SwifterSwift/MapKit (5.2.0)
+  - SwifterSwift/SceneKit (5.2.0)
+  - SwifterSwift/SpriteKit (5.2.0)
+  - SwifterSwift/StoreKit (5.2.0)
+  - SwifterSwift/SwiftStdlib (5.2.0)
+  - SwifterSwift/UIKit (5.2.0)
   - SwiftyJSON (5.0.0)
-  - Tiercel (2.3.0)
-  - Toast-Swift (5.0.0)
-  - TXLiteAVSDK_Player (6.8.7969)
+  - Tiercel (3.2.0)
+  - Toast-Swift (5.0.1)
+  - TXLiteAVSDK_Player (7.2.8932)
   - XLPagerTabStrip (9.0.0)
 
 DEPENDENCIES:
@@ -223,41 +227,41 @@ CHECKOUT OPTIONS:
     :git: https://github.com/luckychris/Chameleon
 
 SPEC CHECKSUMS:
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   AttributedLib: ad537d4f9285ed57fc4d9103dd83c2ee6be1582b
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  FLEX: e7a0cc5ca79419d3b0cf0d39fa7a46cb39cec7fd
-  FloatingPanel: 2f87246071476cf05d77ba3f50a373ca4b04549e
-  GCDWebServer: c0ab22c73e1b84f358d1e2f74bf6afd1c60829f2
+  FLEX: 81096107977a09836eb440173010ceeef01105d6
+  FloatingPanel: 3c9d0e30fe350e1613157557769d2ec97f76b96b
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
-  IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
-  KafkaRefresh: a7962ea8f03f384c1b545d8c27ac419aa0d5b055
+  IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
+  KafkaRefresh: aaae4ff23197f2ef38b6b22ca320740beac4bbb4
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  MMLayout: 3fb59d58eeb8656c64e61d550fb0088e10666c11
+  MMLayout: d559edecd69fbcb348368ba90917e047ab1c544e
   "NSObject+Rx": 2eb2cf51fd1c554118449a7fbc36e4cd620b9e94
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
-  R.swift: 8cbc4fc69b740305b6a17c8a8ed968eb788962d9
-  R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
-  RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
+  R.swift: 7c52cdc57a66840ffe6cbd8a823d732059d42a32
+  R.swift.Library: 5ba4f1631300caf9a4d890186930da85d540769d
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
   RxOptional: b1fcd60856807a564c0215c2184b8d33e7826dc2
-  RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
   RxSwiftExt: 4ca80336f43c28f11a2825cdd2fc61dd6c044697
   RxTheme: 0b642f47c7d197a803c6b9c083964188c34f7ddb
   RxViewController: 7330a46e5c31cd680db169da4c9fc8676e975a81
-  SDWebImage: 51ab1ce3ebd20dec6665ae8ba25c928da323db41
+  SDWebImage: 97351f6582ceca541ea294ba66a1fcb342a331c2
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SuperPlayer: 485a9f5b203cd5cb5e4be26843454fca5916ad53
-  SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
+  SuperPlayer: 5fba5483acaf772d34a462fddfc92819a2d39410
+  SwifterSwift: 334181863c416882d97b7a60c05054d9e4d799e2
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
-  Tiercel: 87c75f90ec3152ee2a278591b41f606b383af2af
-  Toast-Swift: 36f4720243c8582c2be243a60a51e193c761f541
-  TXLiteAVSDK_Player: a3799add98c6802e382972d98cc0e7bacb50984f
+  Tiercel: 37c00d3d309657951d00ae68dcb6ce8c7dccf584
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
+  TXLiteAVSDK_Player: 7e2f5854f131f0de16ffdefa35081a36bb4f1e93
   XLPagerTabStrip: 61c57fd61f611ee5f01ff1495ad6fbee8bf496c5
 
 PODFILE CHECKSUM: 80a3aaf9544a1b06b4604f33c40323df34e08620

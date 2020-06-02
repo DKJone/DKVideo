@@ -45,9 +45,7 @@ class DownLoadManage {
                 }
             })
         } else {
-//            newDownload.downloadStatus.filter { $0 == .started }.take(1).bind { [unowned self] _ in
             downloads.accept(downloads.value.filter { $0.directoryName != fileName } + [newDownload])
-//            }
             newDownload.parse(autoStart: autoStart)
         }
     }
@@ -80,9 +78,7 @@ class DownLoadManage {
             .enumerated().reversed()
             .forEach { offset, element in
                 appDelegate.sessionManagerBackground.remove(String(element), completely: true, onMainQueue: false) { _ in
-                    if offset == 0 {
-                        success?()
-                    }
+                    if offset == 0 {success?()}
                 }
             }
         if FileManager.default.fileExists(atPath: filePath) {

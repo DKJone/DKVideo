@@ -82,4 +82,10 @@ extension UserDefaults {
         get { return standard.bool(forKey: #function) }
         set { standard.setValue(newValue, forKey: #function) }
     }
+
+    /// 同一个任务最多的Ts下载个数
+    static var maxDownloadTS: Int {
+           get { max(standard.integer(forKey: #function), 3)}
+           set { standard.setValue(newValue, forKey: #function) }
+       }
 }

@@ -83,6 +83,7 @@ extension VideoPlayerVC: SuperPlayerDelegate {
         playerModel.multiVideoURLs = [playurl]
         // 开始播放
         playerView.play(with: playerModel)
+        playerView.playerConfig.hwAcceleration = false
         navigationController?.navigationBar.isHidden = true
         (keyWindow.rootViewController as? UISplitViewController)?.presentsWithGesture = false
     }

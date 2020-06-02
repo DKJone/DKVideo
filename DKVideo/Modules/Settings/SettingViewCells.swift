@@ -30,10 +30,12 @@ extension SettingViewController {
                 .disposed(by: rx.disposeBag)
         }
 
-        override func bindViewModel<T: SettingSwitchCellViewModel>(viewModel: T) {
+        override func bindViewModel(viewModel: TableCellViewModel) {
             super.bindViewModel(viewModel: viewModel)
-            viewModel.isEnabled.asDriver().drive(aSwitch.rx.isOn).disposed(by: rx.disposeBag)
-            aSwitch.rx.isOn.bind(to: viewModel.switchChanged).disposed(by: rx.disposeBag)
+            guard let viewModel = viewModel as? SettingSwitchCellViewModel else { return  }
+            viewModel.isEnabled.asDriver().drive(aSwitch.rx.isOn).disposed(by: disposeBag)
+            aSwitch.rx.isOn.bind(to: viewModel.isEnabled).disposed(by: disposeBag)
+            aSwitch.rx.isOn.bind(to: viewModel.switchChanged).disposed(by:disposeBag)
         }
     }
 
@@ -51,10 +53,6 @@ extension SettingViewController {
             themeService.rx
                 .bind({ $0.primary }, to: containerView.rx.backgroundColor)
                 .disposed(by: rx.disposeBag)
-        }
-
-        override func bindViewModel<T: SettingCellViewModel>(viewModel: T) {
-            super.bindViewModel(viewModel: viewModel)
         }
     }
 }
@@ -77,7 +75,8 @@ class SettingSwitchCellViewModel: SettingCellViewModel {
         self.isEnabled.accept(isEnabled)
         self.switchChanged = .init(eventHandler: { event in
             switch event {
-            case let .next(value): valueChanged(value)
+            case let .next(value):
+                valueChanged(value)
             case .completed: break
             case .error: break
             }

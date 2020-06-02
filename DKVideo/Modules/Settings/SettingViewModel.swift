@@ -71,6 +71,7 @@ class SettingViewModel: ViewModel {
             .detail(title: "其他", items: [
                 .text(viewModel: .init(with:
                     "清除缓存", detail: "", image: R.image.icon_cell_dir()?.template, hidesDisclosure: false)),
+                .text(viewModel: SettingCellViewModel(with: "最大下载线程数", detail: UserDefaults.maxDownloadTS.string, image: R.image.icon_navigation_refresh()?.template, hidesDisclosure: false)),
                 .selects(viewModel: .init(with: "打开APP时自动下载", detail: nil, image: R.image.icon_navigation_refresh()?.template, isEnabled: UserDefaults.autoStartDownload, valueChanged: { UserDefaults.autoStartDownload = $0 })),
                 .selects(viewModel: .init(with: "后台时下载", detail: "下次启动生效", image: R.image.icon_navigation_refresh()?.template, isEnabled: UserDefaults.backgroundDownload, valueChanged: { UserDefaults.backgroundDownload = $0 })),
                 .selects(viewModel: .init(with: "使用流量下载", detail: "下次启动生效", image: R.image.icon_navigation_refresh()?.template, isEnabled: UserDefaults.downloadWithoutWifi, valueChanged: { UserDefaults.downloadWithoutWifi = $0 })),

@@ -48,7 +48,8 @@ class VideoPlayServer {
         self.currentServer?.stop()
         let dirPath = getDocumentsDirectory().appendingPathComponent("Downloads").appendingPathComponent(name).path
         self.currentServer = GCDWebDAVServer(uploadDirectory: dirPath)
-        self.currentServer?.start(withPort: 8080, bonjourName: nil)
+//        self.currentServer?.start(withPort: 8080, bonjourName: nil)
+        try? self.currentServer?.start(options: ["Port": 8080, "AutomaticallySuspendInBackground": false])
         let playPath = "http://127.0.0.1:8080/" + name + ".m3u8"
         return playPath
     }

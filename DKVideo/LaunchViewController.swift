@@ -21,7 +21,7 @@ class LaunchViewController: ViewController {
             var htmlStr = (try? String(contentsOf: url)) ?? ""
             htmlStr = htmlStr.replacingOccurrences(of: "screenWidth", with: "\(screenWidth)")
             htmlStr = htmlStr.replacingOccurrences(of: "screenHeight", with: "\(screenHeight)")
-            webview.loadHTMLString(htmlStr, baseURL: nil)
+           // webview.loadHTMLString(htmlStr, baseURL: nil)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 7) { [weak self] in
@@ -31,8 +31,12 @@ class LaunchViewController: ViewController {
 
     override func bindViewModel() {
         view.rx.tap().delay(.seconds(1), scheduler: MainScheduler.asyncInstance).bind { [unowned self] _ in
-            self.switchToHome()
+            //self.switchToHome()
         }.disposed(by: rx.disposeBag)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        switchToHome()
     }
 
     func switchToHome() {

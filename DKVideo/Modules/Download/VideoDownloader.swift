@@ -29,6 +29,7 @@ open class VideoDownloader {
     var segmentDownloaders = [SegmentDownloader]()
     var tsFilesIndex = 0
     var neededDownloadTsFilesCount = 0
+    /// 所有TS任务的下载地址【包括下载、未下载的】
     var downloadURLs = [String]()
     var downloadingProgress: Float {
         let finishedDownloadFilesCount = segmentDownloaders.filter { $0.finishedDownload == true }.count
@@ -37,7 +38,7 @@ open class VideoDownloader {
         return roundedValue
     }
 
-    fileprivate var startDownloadIndex = 2
+    fileprivate var startDownloadIndex = 0
 
     open func startDownload() {
         checkOrCreatedM3u8Directory()
@@ -46,7 +47,7 @@ open class VideoDownloader {
 
         let notInDownloadList = tsPlaylist.tsSegmentArray.filter { !downloadURLs.contains($0.locationURL) }
         neededDownloadTsFilesCount = tsPlaylist.length
-
+        // 将m3u8中的ts转化成下载任务
         for i in 0 ..< notInDownloadList.count {
             let fileName = "\(tsFilesIndex).ts"
 
@@ -70,11 +71,9 @@ open class VideoDownloader {
 
             tsFilesIndex += 1
         }
-
-        segmentDownloaders[0].startDownload()
-        segmentDownloaders[1].startDownload()
-        segmentDownloaders[2].startDownload()
-
+        // 开启下载任务
+        segmentDownloaders[0 ..< UserDefaults.maxDownloadTS].forEach { $0.startDownload() }
+        // 更新任务状态
         downloadStatus.accept(.started)
     }
 
@@ -140,14 +139,16 @@ extension VideoDownloader: SegmentDownloaderDelegate {
         let downloadingFilesCount = segmentDownloaders.filter { $0.isDownloading == true }.count
 
         if finishedDownloadFilesCount == neededDownloadTsFilesCount {
+            //全部下载完成
             downloadStatus.accept(.finished)
         } else if startDownloadIndex == neededDownloadTsFilesCount - 1 {
-            if segmentDownloaders[startDownloadIndex].isDownloading == true { return }
-        } else if downloadingFilesCount < 3 || finishedDownloadFilesCount != neededDownloadTsFilesCount {
+           //所有任务，只剩下载完成的，和下载中的
+        } else if downloadingFilesCount < UserDefaults.maxDownloadTS || finishedDownloadFilesCount != neededDownloadTsFilesCount {
+            //还有任务未开始下载
             if startDownloadIndex < neededDownloadTsFilesCount - 1 {
                 startDownloadIndex += 1
             }
-            segmentDownloaders[startDownloadIndex].startDownload()
+            segmentDownloaders[safe: startDownloadIndex]?.startDownload()
         }
     }
 

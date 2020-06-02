@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1128E968246BE8D1006C0B96 /* archive.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1128E967246BE8D1006C0B96 /* archive.sh */; };
 		11373E0A23AA01DC00E3ACE5 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11373E0923AA01DC00E3ACE5 /* SettingViewModel.swift */; };
 		1199FFB923A38B0A003D831B /* M3U8Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199FFB823A38B0A003D831B /* M3U8Downloader.swift */; };
 		1199FFBD23A38B1B003D831B /* VideoDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199FFBA23A38B1B003D831B /* VideoDownloader.swift */; };
@@ -93,6 +94,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1128E967246BE8D1006C0B96 /* archive.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = archive.sh; sourceTree = "<group>"; };
 		11373E0923AA01DC00E3ACE5 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		1199FFB823A38B0A003D831B /* M3U8Downloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = M3U8Downloader.swift; sourceTree = "<group>"; };
 		1199FFBA23A38B1B003D831B /* VideoDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoDownloader.swift; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 		11BD5ABF2396790200C69E63 = {
 			isa = PBXGroup;
 			children = (
+				1128E967246BE8D1006C0B96 /* archive.sh */,
 				11BD5ACA2396790200C69E63 /* DKVideo */,
 				11BD5AF12397BE8C00C69E63 /* VideoShare */,
 				11BD5AC92396790200C69E63 /* Products */,
@@ -468,6 +471,7 @@
 				11FCB158239E1D8000DB45F9 /* Vipwebsites.json in Resources */,
 				11A5195D2399F6FE005A924C /* index.html in Resources */,
 				11BD5AD52396790500C69E63 /* Assets.xcassets in Resources */,
+				1128E968246BE8D1006C0B96 /* archive.sh in Resources */,
 				11BD5AD32396790200C69E63 /* Main.storyboard in Resources */,
 				11FCB152239DEEBA00DB45F9 /* Platform.json in Resources */,
 			);

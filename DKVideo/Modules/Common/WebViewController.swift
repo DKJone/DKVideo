@@ -15,6 +15,7 @@ class WebViewController: ViewController {
     var exitURLParam = [String]()
     var fpc: FloatingPanelController!
     var didEvaluatedJS = true
+    let litterWebView = UIWebView()
     override func makeUI() {
         super.makeUI()
         contentView.addSubview(webView)
@@ -95,7 +96,7 @@ class WebViewController: ViewController {
 
         fpc.surfaceView.shadowHidden = false
         let vipVC = ViewController()
-        let litterWebView = UIWebView()
+
         litterWebView.allowsInlineMediaPlayback = true
         litterWebView.mediaPlaybackRequiresUserAction = false
         litterWebView.tag = 1970
@@ -142,6 +143,10 @@ class WebViewController: ViewController {
             requestURL = requestUrl
             UIViewController.currentViewController()?.navigationController?.pushViewController(self)
         }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        litterWebView.stopLoading()
     }
 }
 

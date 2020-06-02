@@ -160,8 +160,11 @@ enum M3u8ParaseError: CustomStringConvertible, Error {
 }
 
 struct M3u8TsSegmentModel {
+    /// 起始时间
     var duration: Float = 0.0
+    /// 原始地址
     var locationURL = ""
+    /// 文件索引
     var index: Int = 0
 }
 

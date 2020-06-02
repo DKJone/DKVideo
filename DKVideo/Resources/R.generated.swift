@@ -9,14 +9,14 @@ import UIKit
 
 /// This `R` struct is generated and contains references to static resources.
 struct R: Rswift.Validatable {
-  fileprivate static let applicationLocale = hostingBundle.preferredLocalizations.first.flatMap(Locale.init) ?? Locale.current
+  fileprivate static let applicationLocale = hostingBundle.preferredLocalizations.first.flatMap { Locale(identifier: $0) } ?? Locale.current
   fileprivate static let hostingBundle = Bundle(for: R.Class.self)
 
   /// Find first language and bundle for which the table exists
   fileprivate static func localeBundle(tableName: String, preferredLanguages: [String]) -> (Foundation.Locale, Foundation.Bundle)? {
     // Filter preferredLanguages to localizations, use first locale
     var languages = preferredLanguages
-      .map(Locale.init)
+      .map { Locale(identifier: $0) }
       .prefix(1)
       .flatMap { locale -> [String] in
         if hostingBundle.localizations.contains(locale.identifier) {
@@ -114,12 +114,14 @@ struct R: Rswift.Validatable {
   }
   #endif
 
-  /// This `R.file` struct is generated, and contains static references to 4 files.
+  /// This `R.file` struct is generated, and contains static references to 5 files.
   struct file {
     /// Resource file `Platform.json`.
     static let platformJson = Rswift.FileResource(bundle: R.hostingBundle, name: "Platform", pathExtension: "json")
     /// Resource file `Vipwebsites.json`.
     static let vipwebsitesJson = Rswift.FileResource(bundle: R.hostingBundle, name: "Vipwebsites", pathExtension: "json")
+    /// Resource file `archive.sh`.
+    static let archiveSh = Rswift.FileResource(bundle: R.hostingBundle, name: "archive", pathExtension: "sh")
     /// Resource file `blank.caf`.
     static let blankCaf = Rswift.FileResource(bundle: R.hostingBundle, name: "blank", pathExtension: "caf")
     /// Resource file `index.html`.
@@ -134,6 +136,12 @@ struct R: Rswift.Validatable {
     /// `bundle.url(forResource: "Vipwebsites", withExtension: "json")`
     static func vipwebsitesJson(_: Void = ()) -> Foundation.URL? {
       let fileResource = R.file.vipwebsitesJson
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "archive", withExtension: "sh")`
+    static func archiveSh(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.archiveSh
       return fileResource.bundle.url(forResource: fileResource)
     }
 

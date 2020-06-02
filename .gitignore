@@ -89,3 +89,7 @@ fastlane/test_output
 
 iOSInjectionProject/
 Pods
+IPADir
+exportTest.plist
+archive.sh
+exportAppstore.plist

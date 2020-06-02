@@ -45,20 +45,33 @@ class SettingViewController: TableViewController {
             if item.viewModel.title.value == "主题设置" {
                 let themes = ColorTheme.allValues.map { CommonListData(id: $0.rawValue.string, text: $0.title, selected: UserDefaults.standard.themeColor == $0.rawValue, icon: UIImage(color: $0.color, size: CGSize(width: 30, height: 30))) }
 
-                showSelectVC(inVC: self,  height: CGFloat(themes.count * 44),listDataProvider: { list in
+                showSelectVC(inVC: self, height: CGFloat(themes.count * 44), listDataProvider: { list in
                     list = themes
                 }) { list in
                     let theme = ColorTheme(rawValue: Int(list.first!.id)!)!
                     themeService.switch(ThemeType.currentTheme().withColor(color: theme))
                 }
-            }else if item.viewModel.title.value == "关于"{
+            } else if item.viewModel.title.value == "关于" {
                 let webVC = WebViewController()
                 webVC.requestURL = URL(string: "https://www.jianshu.com/p/f9d06ed27f24")
                 self.navigationController?.pushViewController(webVC)
+            } else if item.viewModel.title.value == "最大下载线程数" {
+                self.changeMaxTs(vm: item.viewModel)
             }
         }.disposed(by: rx.disposeBag)
-        tableView.rx.itemSelected.bind { [unowned self](indexPath) in
+        tableView.rx.itemSelected.bind { [unowned self] indexPath in
             self.tableView.deselectRow(at: indexPath, animated: true)
         }.disposed(by: rx.disposeBag)
+    }
+
+    func changeMaxTs(vm: SettingCellViewModel) {
+        let alert = UIAlertController(title: "最大下载线程数", message: nil, preferredStyle: .alert)
+        alert.addTextField(text: UserDefaults.maxDownloadTS.string, placeholder: nil, editingChangedTarget: nil, editingChangedSelector: nil)
+        alert.addAction(title: "确定", style: .default, isEnabled: true) { _ in
+            UserDefaults.maxDownloadTS = alert.textFields?.first?.text?.int ?? 3
+            vm.detail.accept(UserDefaults.maxDownloadTS.string)
+        }
+        alert.addAction(title: "取消", style: .cancel, isEnabled: true, handler: nil)
+        alert.show()
     }
 }
